@@ -1,0 +1,10 @@
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\bin\Debug\GamemodeManager.dll
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\bin\Debug\GamemodeManager.pdb
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\bin\Debug\Smod2.dll
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\obj\Debug\GamemodeManager.csprojResolveAssemblyReference.cache
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\obj\Debug\GamemodeManager.csproj.CoreCompileInputs.cache
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\obj\Debug\GamemodeManager.csproj.CopyComplete
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\obj\Debug\GamemodeManager.dll
+D:\SCPSL\Smod2\GamemodeManager\GamemodeManager\obj\Debug\GamemodeManager.pdb
+D:\SCPSL\Smod2\SmodEventTest\SmodEventTest\bin\Debug\GamemodeManager.dll
+D:\SCPSL\Smod2\SmodEventTest\SmodEventTest\bin\Debug\GamemodeManager.pdb
