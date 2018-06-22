@@ -2,9 +2,11 @@
 A framework that supports different gamemodes in one single server.
 
 # Command
-*gamemode* - Show the current gamemode.
-*gamemode list* - Show a list of gamemodes.
-*gamemode setnextmode <plugin id>* - Set the mode of next round.
+**gamemode** - Show the current gamemode.
+
+**gamemode list** - Show a list of gamemodes.
+
+**gamemode setnextmode <plugin id>** - Set the mode of next round.
 
 # API
 void RegisterMode(Plugin gamemode, string spawnqueue = "-1");
