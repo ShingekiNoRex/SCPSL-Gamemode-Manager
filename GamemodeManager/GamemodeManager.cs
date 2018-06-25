@@ -122,10 +122,12 @@ namespace Smod2.Handler
 				string servername = plugin.pluginManager.Server.Name;
 				servername = servername.Replace(GamemodeManager.GamemodeManager.CurrentMode.Details.name, "$gamemode");
 				servername = servername.Replace("$gamemode", GamemodeManager.GamemodeManager.NextMode.Details.name);
+				/*
 				servername = servername.Replace("Plague Curse", "瘟疫诅咒");
 				servername = servername.Replace("Escort VIP", "护送VIP");
 				servername = servername.Replace("Infinite Escaping", "无限逃生");
 				servername = servername.Replace("Standard Mode", "标准模式");
+				*/
 				plugin.pluginManager.Server.Name = servername;
 
 				plugin.Info("Change mode to [" + GamemodeManager.GamemodeManager.NextMode.ToString() + "]");
@@ -138,10 +140,12 @@ namespace Smod2.Handler
 				string servername = plugin.pluginManager.Server.Name;
 				servername = servername.Replace(GamemodeManager.GamemodeManager.CurrentMode.Details.name, "$gamemode");
 				servername = servername.Replace("$gamemode", GamemodeManager.GamemodeManager.ModeList[ModeCount].Details.name);
+				/*
 				servername = servername.Replace("Plague Curse", "瘟疫诅咒");
 				servername = servername.Replace("Escort VIP", "护送VIP");
 				servername = servername.Replace("Infinite Escaping", "无限逃生");
 				servername = servername.Replace("Standard Mode", "标准模式");
+				*/
 				plugin.pluginManager.Server.Name = servername;
 
 				plugin.Info("Change mode to [" + GamemodeManager.GamemodeManager.ModeList[ModeCount].ToString() + "]");
