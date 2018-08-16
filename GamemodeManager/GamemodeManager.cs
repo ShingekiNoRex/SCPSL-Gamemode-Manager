@@ -201,10 +201,11 @@ namespace Smod2.Handler
                     {
                         queue = queue + (int)team;
                     }
-					plugin.Info(GamemodeManager.GamemodeManager.CurrentMode.ToString() + " Queue:" + queue);
+		    return new string[] { GamemodeManager.GamemodeManager.CurrentMode.ToString() + " Queue:" + queue };
                 }
                 else if (args[0].ToUpper().Equals("LIST"))
                 {
+		    string myList = string.Empty;
                     int i = 0;
                     foreach (Plugin modeplugin in GamemodeManager.GamemodeManager.ModeList)
                     {
@@ -213,29 +214,24 @@ namespace Smod2.Handler
                         {
                             queue = queue + (int)team;
                         }
-						plugin.Info(modeplugin.ToString() + " Queue:" + queue);
+			myList += modeplugin.ToString() + " Queue:" + queue + "\n";
                     }
+		    return new string[] { myList };
                 }
                 else if (args[0].ToUpper().Equals("SETNEXTMODE") && args.Length == 2)
                 {
-					Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
-					if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
-					{
-						GamemodeManager.GamemodeManager.NextMode = nextmode;
-						plugin.Info("Next mode will be " + nextmode.ToString());
-					}
-					else
-					{
-						plugin.Info("Can't find gamemode: " + args[1]);
-					}
+			Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
+			if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
+			{
+				GamemodeManager.GamemodeManager.NextMode = nextmode;
+				return new string[] { "Next mode will be " + nextmode.ToString() };
+			}
+			else
+			    return new string[] { "Can't find gamemode: " + args[1] };
                 }
             }
             else
-            {
-				plugin.Info("Can't find any gamemode.");
-            }
-
-			return new string[] { "" };
+		return new string[] { "Can't find any gamemode." };
         }
     }
 }
