@@ -11,10 +11,10 @@ namespace SetNickname
         name = "Plague Curse",
         description = "Curse of the Plague(Based on Gamemode Manager)",
         id = "rex.gamemode.plaguecurse",
-        version = "1.2",
+        version = "1.3",
         SmodMajor = 3,
         SmodMinor = 1,
-        SmodRevision = 4
+        SmodRevision = 13
         )]
     class GiveItem : Plugin
     {

@@ -63,7 +63,8 @@ namespace GamemodeManager
 			{
 				spawnqueue = gamemode.GetConfigString("team_respawn_queue");
 			}
-			gamemode.pluginManager.DisablePlugin(gamemode);
+
+			//PluginManager.Manager.DisablePlugin(gamemode);
 
 			List<Team> classTeamQueue = new List<Team>();
 			for (int i = 0; i < spawnqueue.Length; i++)
@@ -125,7 +126,13 @@ namespace Smod2.Handler
 		{
 			if (!FirstRound)
 			{
-				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config.txt", "sm_config_gamemode.txt");
+				/*
+				foreach (Plugin gamemode in GamemodeManager.GamemodeManager.ModeList)
+				{
+					plugin.pluginManager.DisablePlugin(gamemode);
+				}
+				*/
+				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
 				if (File.Exists(path))
 				{
 					int queue = -1;
@@ -133,13 +140,15 @@ namespace Smod2.Handler
 					List<int> rounds = new List<int>();
 					List<string> spawnqueue = new List<string>();
 					GamemodeManager.GamemodeManager.ModeList.Clear();
+					GamemodeManager.GamemodeManager.SpawnQueue.Clear();
+					
 					string[] config = File.ReadAllLines(path);
 					foreach (string line in config)
 					{
 						if (line.Contains("[") && line.Contains("]"))
 						{
 							string pluginid = line.Replace("[", string.Empty).Replace("]", string.Empty);
-							Plugin gamemode = plugin.pluginManager.GetDisabledPlugin(pluginid);
+							Plugin gamemode = plugin.pluginManager.GetEnabledPlugin(pluginid);
 							if (pluginid.ToUpper().Equals("DEFAULT"))
 							{
 								gamemode = this.plugin;
@@ -152,7 +161,7 @@ namespace Smod2.Handler
 							queue++;
 							modeList.Add(gamemode);
 							rounds.Add(0);
-							spawnqueue.Add("-1");
+							spawnqueue.Add("40143140314414041340");
 						}
 						else if (queue > -1 && line.Contains("-"))
 						{
@@ -171,6 +180,7 @@ namespace Smod2.Handler
 									}
 								case "SPAWNQUEUE":
 									{
+										plugin.Info("spawnqueue[" + queue + "] = " + keyvalue[1]);
 										spawnqueue[queue] = keyvalue[1];
 										break;
 									}
@@ -182,9 +192,8 @@ namespace Smod2.Handler
 						for (int j = 0; j < rounds[i]; j ++)
 						{
 							GamemodeManager.GamemodeManager.ModeList.Add(modeList[i]);
-
 							List<Team> classTeamQueue = new List<Team>();
-							for (int k = 0; k < spawnqueue[i].Length; i++)
+							for (int k = 0; k < spawnqueue[i].Length; k++)
 							{
 								int item = 4;
 								if (!int.TryParse(spawnqueue[i][k].ToString(), out item))
@@ -193,17 +202,16 @@ namespace Smod2.Handler
 								}
 								classTeamQueue.Add((Team)item);
 							}
-
 							GamemodeManager.GamemodeManager.SpawnQueue.Add(classTeamQueue.ToArray());
 						}
 					}
 				}
 
 				GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[0];
-
-				if (!GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin))
+				/*
+				if (!GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) && !plugin.pluginManager.EnabledPlugins.Contains(GamemodeManager.GamemodeManager.CurrentMode))
 					plugin.pluginManager.EnablePlugin(GamemodeManager.GamemodeManager.CurrentMode);
-
+				*/
 				FirstRound = true;
 			}
 		}
@@ -212,21 +220,25 @@ namespace Smod2.Handler
 		{
 			if (GamemodeManager.GamemodeManager.DisableAll)
 			{
+				/*
 				foreach (Plugin gamemode in GamemodeManager.GamemodeManager.ModeList)
 				{
 					if (!gamemode.Equals(this.plugin))
 						plugin.pluginManager.DisablePlugin(gamemode);
 				}
+				*/
+				GamemodeManager.GamemodeManager.CurrentMode = null;
 			}
 			else
 			{
 				if (GamemodeManager.GamemodeManager.NextMode != null)
 				{
+					/*
 					if (!GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin))
 						plugin.pluginManager.DisablePlugin(GamemodeManager.GamemodeManager.CurrentMode);
 					if (!GamemodeManager.GamemodeManager.NextMode.Equals(this.plugin))
 						plugin.pluginManager.EnablePlugin(GamemodeManager.GamemodeManager.NextMode);
-
+					*/
 					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.NextMode;
 					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[GamemodeManager.GamemodeManager.ModeList.FindIndex(x => x.Equals(GamemodeManager.GamemodeManager.CurrentMode))];
 					GamemodeManager.GamemodeManager.NextMode = null;
@@ -234,11 +246,12 @@ namespace Smod2.Handler
 				}
 				else if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
 				{
+					/*
 					if (!GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin))
 						plugin.pluginManager.DisablePlugin(GamemodeManager.GamemodeManager.CurrentMode);
 					if (!GamemodeManager.GamemodeManager.ModeList[ModeCount].Equals(this.plugin))
 						plugin.pluginManager.EnablePlugin(GamemodeManager.GamemodeManager.ModeList[ModeCount]);
-
+					*/
 					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[ModeCount];
 					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount++];
 					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
@@ -297,8 +310,17 @@ namespace Smod2.Handler
 			{
 				if (args.Length > 0 && args[0].ToUpper().Equals("LIST"))
 				{
-					string myList = string.Empty;
-					int i = 0;
+					string myList = "Gamemodes List" + "\n";
+					for (int i = 0; i < GamemodeManager.GamemodeManager.ModeList.Count; i ++)
+					{
+						string queue = "";
+						foreach (Team team in GamemodeManager.GamemodeManager.SpawnQueue[i])
+						{
+							queue = queue + (int)team;
+						}
+						myList += "[" + (i + 1) + "]" + GamemodeManager.GamemodeManager.ModeList[i].ToString() + " Queue:" + queue + "\n";
+					}
+					/*
 					foreach (Plugin modeplugin in GamemodeManager.GamemodeManager.ModeList)
 					{
 						string queue = "";
@@ -306,8 +328,9 @@ namespace Smod2.Handler
 						{
 							queue = queue + (int)team;
 						}
-						myList += modeplugin.ToString() + " Queue:" + queue + "\n";
+						myList += "[" + i + "]" + modeplugin.ToString() + " Queue:" + queue + "\n";
 					}
+					*/
 					return new string[] { myList };
 				}
 				else if (args.Length > 0 && args[0].ToUpper().Equals("ENABLE"))

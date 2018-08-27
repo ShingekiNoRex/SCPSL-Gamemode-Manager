@@ -35,6 +35,8 @@ namespace Smod.TestPlugin
 				ev.Ban096 = true;
 				ev.Ban106 = true;
 				ev.Ban173 = true;
+				ev.Ban939_53 = true;
+				ev.Ban939_89 = true;
             }
         }
 
