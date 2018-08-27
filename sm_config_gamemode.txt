@@ -1,20 +1,20 @@
-[rex.scp035]
- - Name: SCP-035
- - Rounds: 2
- - SpawnQueue: 43444404444344434444
 [rex.gamemode.plaguecurse]
  - Name: Plague Curse
- - Rounds: 2
- - SpawnQueue: 01111111111111111111
-[rex.scp035]
- - Name: SCP-035
  - Rounds: 1
- - SpawnQueue: 43444404444344434444
+ - SpawnQueue: 01111111111111111111
+ - Description: 1.There is only one SCP-049 in this mode. <n>2.Player who kills SCP-049 with guns will be turned into SCP-049. <n>3.Player who gets attacked by zombies will be turned into SCP-049-2.
+[default]
+ - Name: Normal
+ - Rounds: 2
+ - SpawnQueue: 40143140314414041340
+ - Description: None
 [rex.gamemode.escortvip]
  - Name: Escort VIP
  - Rounds: 1
- - SpawnQueue: 40222220222222022222
+ - SpawnQueue: 01111111111111111111
+ - Description: A Class-D(VIP) spawns with serveral CI in the cell. They need escort VIP to escape from the facility. There are also some SCPs in the facility, as long as they kill VIP, they win.
 [default]
- - Name: Normal
- - Rounds: 1
- - SpawnQueue: 40143140314414041340
+ - Name: Class-D Escape
+ - Rounds: 2
+ - SpawnQueue: 04444044440444404444
+ - Description: Only Class-Ds and SCPs spawn in this mode. RUN FOR YOUR LIFE!!!
