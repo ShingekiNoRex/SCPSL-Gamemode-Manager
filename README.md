@@ -8,7 +8,7 @@ A framework that supports different gamemodes in one single server.
 
 **gamemode list** - Show the list of gamemodes.
 
-**gamemode setnextmode <plugin id> <spawn queue> <name>** - Set the mode of next round.
+**gamemode setnextmode (plugin id) (spawn queue) (name)** - Set the mode of next round.
 
 **gamemode enable** - Enable gamemodes.
 
