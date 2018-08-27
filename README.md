@@ -1,6 +1,8 @@
 # SCPSL Gamemode Manager
 A framework that supports different gamemodes in one single server.
 
+Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify gamemodes.
+
 # Command
 **gamemode** - Show the current gamemode.
 
@@ -8,7 +10,7 @@ A framework that supports different gamemodes in one single server.
 
 **gamemode list** - Show the list of gamemodes.
 
-**gamemode setnextmode (plugin id) (spawn queue) (name)** - Set the mode of next round.
+**gamemode setnextmode [plugin id] [spawn queue] [name]** - Set the mode of next round.
 
 **gamemode enable** - Enable gamemodes.
 

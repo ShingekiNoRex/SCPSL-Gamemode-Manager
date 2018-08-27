@@ -1,0 +1,20 @@
+[rex.scp035]
+ - Name: SCP-035
+ - Rounds: 2
+ - SpawnQueue: 43444404444344434444
+[rex.plague.curse]
+ - Name: Plague Curse
+ - Rounds: 2
+ - SpawnQueue: 01111111111111111111
+[rex.scp035]
+ - Name: SCP-035
+ - Rounds: 1
+ - SpawnQueue: 43444404444344434444
+[rex.escort.vip]
+ - Name: Escort VIP
+ - Rounds: 1
+ - SpawnQueue: 40222220222222022222
+[default]
+ - Name: Normal
+ - Rounds: 1
+ - SpawnQueue: 40143140314414041340
