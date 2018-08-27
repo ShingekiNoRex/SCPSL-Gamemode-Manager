@@ -1,6 +1,0 @@
-I:\SMOD\Github\SmodEventTest\SmodEventTest\bin\Debug\PlagueCurse.dll
-I:\SMOD\Github\SmodEventTest\SmodEventTest\bin\Debug\PlagueCurse.pdb
-I:\SMOD\Github\SCPSL-Gamemode-Manager\Gamemodes\PlagueCurse\PlagueCurse\obj\Debug\PlagueCurse.csprojResolveAssemblyReference.cache
-I:\SMOD\Github\SCPSL-Gamemode-Manager\Gamemodes\PlagueCurse\PlagueCurse\obj\Debug\PlagueCurse.csproj.CoreCompileInputs.cache
-I:\SMOD\Github\SCPSL-Gamemode-Manager\Gamemodes\PlagueCurse\PlagueCurse\obj\Debug\PlagueCurse.dll
-I:\SMOD\Github\SCPSL-Gamemode-Manager\Gamemodes\PlagueCurse\PlagueCurse\obj\Debug\PlagueCurse.pdb
