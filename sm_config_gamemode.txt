@@ -2,7 +2,7 @@
  - Name: SCP-035
  - Rounds: 2
  - SpawnQueue: 43444404444344434444
-[rex.plague.curse]
+[rex.gamemode.plaguecurse]
  - Name: Plague Curse
  - Rounds: 2
  - SpawnQueue: 01111111111111111111
@@ -10,7 +10,7 @@
  - Name: SCP-035
  - Rounds: 1
  - SpawnQueue: 43444404444344434444
-[rex.escort.vip]
+[rex.gamemode.escortvip]
  - Name: Escort VIP
  - Rounds: 1
  - SpawnQueue: 40222220222222022222
