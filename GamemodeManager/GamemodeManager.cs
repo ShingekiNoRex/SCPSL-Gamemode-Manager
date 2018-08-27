@@ -16,7 +16,7 @@ namespace Smod2.Plugins
 		name = "GamemodeManager",
 		description = "",
 		id = "rex.gamemode.manager",
-		version = "1.6",
+		version = "2.0",
 		SmodMajor = 3,
 		SmodMinor = 1,
 		SmodRevision = 14
@@ -51,17 +51,21 @@ namespace GamemodeManager
 		public static Team[] NextQueue;
 		public static string CurrentName;
 		public static string NextName;
+		public static string CurrentDescription;
 		public static List<Plugin> ModeList = new List<Plugin>();
 		public static List<Team[]> SpawnQueue = new List<Team[]>();
 		public static List<string> ModeName = new List<string>();
+		public static List<string> Descriptions = new List<string>();
 		public static bool DisableAll;
 
 		public static void RegisterMode(Plugin gamemode, string spawnqueue = "-1")
 		{
 			CurrentMode = gamemode;
 			CurrentName = gamemode.Details.name;
+			CurrentDescription = gamemode.Details.description;
 			ModeList.Add(gamemode);
 			ModeName.Add(CurrentName);
+			Descriptions.Add(CurrentDescription);
 			gamemode.Info("[GamemodeManager] " + gamemode.ToString() + " has been registered.");
 
 			if (spawnqueue.Equals("-1"))
@@ -144,7 +148,7 @@ namespace GamemodeManager
 
 namespace Smod2.Handler
 { 
-	class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName
+	class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
 		private Plugin plugin;
 		public SmodEventHandler(Plugin plugin)
@@ -155,6 +159,12 @@ namespace Smod2.Handler
 		private static int ModeCount = 0;
 
 		private static bool FirstRound;
+
+		public void OnPlayerJoin(PlayerJoinEvent ev)
+		{
+			//ev.Player.SendConsoleMessage("\n当前模式: " + GamemodeManager.GamemodeManager.CurrentName + "\n介绍: \n" + GamemodeManager.GamemodeManager.CurrentDescription.Replace("<n>", System.Environment.NewLine), "red");
+			ev.Player.SendConsoleMessage("\nCurrent Mode: " + GamemodeManager.GamemodeManager.CurrentName + "\nDescription: \n" + GamemodeManager.GamemodeManager.CurrentDescription.Replace("<n>", System.Environment.NewLine), "red");
+		}
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
@@ -168,9 +178,11 @@ namespace Smod2.Handler
 					List<string> name = new List<string>();
 					List<int> rounds = new List<int>();
 					List<string> spawnqueue = new List<string>();
+					List<string> description = new List<string>();
 					GamemodeManager.GamemodeManager.ModeList.Clear();
 					GamemodeManager.GamemodeManager.ModeName.Clear();
 					GamemodeManager.GamemodeManager.SpawnQueue.Clear();
+					GamemodeManager.GamemodeManager.Descriptions.Clear();
 					
 					string[] config = File.ReadAllLines(path);
 					foreach (string line in config)
@@ -193,6 +205,7 @@ namespace Smod2.Handler
 							name.Add(gamemode.Equals(this.plugin) ? "Default" : gamemode.Details.name);
 							rounds.Add(0);
 							spawnqueue.Add("40143140314414041340");
+							description.Add(gamemode.Equals(this.plugin) ? "Standard Mode" : gamemode.Details.description);
 						}
 						else if (queue > -1 && line.Contains("-"))
 						{
@@ -215,6 +228,11 @@ namespace Smod2.Handler
 										spawnqueue[queue] = keyvalue[1];
 										break;
 									}
+								case "DESCRIPTION":
+									{
+										description[queue] = keyvalue[1];
+										break;
+									}
 							}
 						}
 					}
@@ -224,6 +242,7 @@ namespace Smod2.Handler
 						{
 							GamemodeManager.GamemodeManager.ModeList.Add(modeList[i]);
 							GamemodeManager.GamemodeManager.ModeName.Add(name[i]);
+							GamemodeManager.GamemodeManager.Descriptions.Add(description[i]);
 							List<Team> classTeamQueue = new List<Team>();
 							for (int k = 0; k < spawnqueue[i].Length; k++)
 							{
@@ -242,6 +261,7 @@ namespace Smod2.Handler
 				GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[0];
 				GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[0];
 				GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[0];
+				GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[0];
 				FirstRound = true;
 			}
 		}
@@ -260,6 +280,7 @@ namespace Smod2.Handler
 					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.NextMode;
 					GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.NextName;
 					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.NextQueue;
+					GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Standard Mode" : GamemodeManager.GamemodeManager.CurrentMode.Details.description;
 					GamemodeManager.GamemodeManager.NextMode = null;
 					GamemodeManager.GamemodeManager.NextName = null;
 					GamemodeManager.GamemodeManager.NextQueue = null;
@@ -269,7 +290,8 @@ namespace Smod2.Handler
 				{
 					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[ModeCount];
 					GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[ModeCount];
-					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount++];
+					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount];
+					GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[ModeCount++];
 					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
 
 					if (ModeCount >= GamemodeManager.GamemodeManager.ModeList.Count)
@@ -324,7 +346,7 @@ namespace Smod2.Handler
 		{
 			if (args.Length == 1 && args[0].ToUpper().Equals("HELP"))
 			{
-				return new string[] { "Gamemode Command List" + "/n" + "gamemode - Show the current gamemode." + "/n" + "gamemode help - Show the usage of gamemode command." + "/n" + "gamemode list - Show the list of gamemodes." + "/n" + "gamemode setnextmode <plugin id> <spawn queue> <name> - Set the gamemode of next round." + "/n" + "gamemode enable - Enable gamemodes." + "/n" + "gamemode disable - Disable all gamemodes." };
+				return new string[] { "Gamemode Command List" + "\n" + "gamemode - Show the current gamemode." + "\n" + "gamemode help - Show the usage of gamemode command." + "\n" + "gamemode list - Show the list of gamemodes." + "\n" + "gamemode setnextmode <plugin id> <spawn queue> <name> - Set the gamemode of next round." + "\n" + "gamemode enable - Enable gamemodes." + "\n" + "gamemode disable - Disable all gamemodes." };
 			}
 			else
 			{
