@@ -48,7 +48,9 @@ namespace GamemodeManager
 		public static Plugin CurrentMode;
 		public static Plugin NextMode;
 		public static Team[] CurrentQueue;
+		public static Team[] NextQueue;
 		public static string CurrentName;
+		public static string NextName;
 		public static List<Plugin> ModeList = new List<Plugin>();
 		public static List<Team[]> SpawnQueue = new List<Team[]>();
 		public static List<string> ModeName = new List<string>();
@@ -81,13 +83,30 @@ namespace GamemodeManager
 			SpawnQueue.Add(CurrentQueue);
 		}
 
-		/*
-		public static void SetCurrentMode(Plugin gamemode)
+		public static void SetNextMode(Plugin gamemode, string spawnqueue = "-1", string name = null)
 		{
-			CurrentMode = gamemode;
-			CurrentQueue = SpawnQueue[ModeList.FindIndex(x => x.Equals(gamemode))];
+			NextMode = gamemode;
+			NextName = string.IsNullOrEmpty(name) ? gamemode.Details.name : name;
+
+			if (spawnqueue.Equals("-1"))
+			{
+				NextQueue = SpawnQueue[ModeList.FindIndex(x => x.Equals(gamemode))];
+			}
+			else
+			{
+				List<Team> classTeamQueue = new List<Team>();
+				for (int i = 0; i < spawnqueue.Length; i++)
+				{
+					int item = 4;
+					if (!int.TryParse(spawnqueue[i].ToString(), out item))
+					{
+						item = 4;
+					}
+					classTeamQueue.Add((Team)item);
+				}
+				NextQueue = classTeamQueue.ToArray();
+			}
 		}
-		*/
 
 		public static Plugin GetCurrentMode()
 		{
@@ -115,6 +134,7 @@ namespace GamemodeManager
 			return ModeName[ModeList.FindIndex(x => x.Equals(gamemode))];
 		}
 		*/
+
 		public static List<Plugin> GetModeList()
 		{
 			return ModeList;
@@ -238,9 +258,12 @@ namespace Smod2.Handler
 				if (GamemodeManager.GamemodeManager.NextMode != null)
 				{
 					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.NextMode;
-					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[GamemodeManager.GamemodeManager.ModeList.FindIndex(x => x.Equals(GamemodeManager.GamemodeManager.CurrentMode))];
+					GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.NextName;
+					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.NextQueue;
 					GamemodeManager.GamemodeManager.NextMode = null;
-					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
+					GamemodeManager.GamemodeManager.NextName = null;
+					GamemodeManager.GamemodeManager.NextQueue = null;
+					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
 				}
 				else if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
 				{
@@ -289,75 +312,88 @@ namespace Smod2.Handler
 
 		public string GetCommandDescription()
 		{
-			return "Show current gamemode [Show a list of gamemodes/Set the mode of next round/Enable gamemodes/Disable gamemodes]";
+			return "Show the usage of gamemode command";
 		}
 
 		public string GetUsage()
 		{
-			return "GAMEMODE [LIST/SETNEXTMODE/ENABLE/DISABLE]";
+			return "GAMEMODE HELP";
 		}
 
 		public string[] OnCall(ICommandSender sender, string[] args)
 		{
-			if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
+			if (args.Length == 1 && args[0].ToUpper().Equals("HELP"))
 			{
-				if (args.Length > 0 && args[0].ToUpper().Equals("LIST"))
+				return new string[] { "Gamemode Command List /n gamemode - Show the current gamemode. /n gamemode help - Show the usage of gamemode command. /n gamemode list - Show the list of gamemodes. /n gamemode setnextmode <pluginid> <spawnqueue> <name> /n gamemode enable - Enable gamemodes. /n gamemode disable - Disable all gamemodes." };
+			}
+			else
+			{
+				if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
 				{
-					string myList = "Gamemodes List" + "\n";
-					for (int i = 0; i < GamemodeManager.GamemodeManager.ModeList.Count; i ++)
+					if (args.Length > 0 && args[0].ToUpper().Equals("LIST"))
 					{
-						string queue = "";
-						foreach (Team team in GamemodeManager.GamemodeManager.SpawnQueue[i])
+						string myList = "Gamemodes List" + "\n";
+						for (int i = 0; i < GamemodeManager.GamemodeManager.ModeList.Count; i++)
 						{
-							queue = queue + (int)team;
+							string queue = "";
+							foreach (Team team in GamemodeManager.GamemodeManager.SpawnQueue[i])
+							{
+								queue = queue + (int)team;
+							}
+							myList += "[" + (i + 1) + "]" + (GamemodeManager.GamemodeManager.ModeList[i].Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.ModeList[i].ToString()) + " Name:" + GamemodeManager.GamemodeManager.ModeName[i] + " Queue:" + queue + "\n";
 						}
-						myList += "[" + (i + 1) + "]" + (GamemodeManager.GamemodeManager.ModeList[i].Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.ModeList[i].ToString()) + " Name:" + GamemodeManager.GamemodeManager.ModeName[i] + " Queue:" + queue + "\n";
+						return new string[] { myList };
 					}
-					return new string[] { myList };
-				}
-				else if (args.Length > 0 && args[0].ToUpper().Equals("ENABLE"))
-				{
-					GamemodeManager.GamemodeManager.DisableAll = false;
-					return new string[] { "Gamemodes will be enabled in the following rounds." };
-				}
-				else if (args.Length > 0 && args[0].ToUpper().Equals("DISABLE"))
-				{
-					GamemodeManager.GamemodeManager.DisableAll = true;
-					return new string[] { "Gamemodes will be disabled in the following rounds." };
-				}
-				/*
-				else if (args.Length == 2 && args[0].ToUpper().Equals("SETNEXTMODE"))
-				{
-					if (args[1].ToUpper().Equals("DEFAULT"))
+					else if (args.Length > 0 && args[0].ToUpper().Equals("ENABLE"))
 					{
-						GamemodeManager.GamemodeManager.NextMode = this.plugin;
-						return new string[] { "Next mode will be Default"};
+						GamemodeManager.GamemodeManager.DisableAll = false;
+						return new string[] { "Gamemodes will be enabled in the following rounds." };
+					}
+					else if (args.Length > 0 && args[0].ToUpper().Equals("DISABLE"))
+					{
+						GamemodeManager.GamemodeManager.DisableAll = true;
+						return new string[] { "Gamemodes will be disabled in the following rounds." };
+					}
+					else if (args.Length >= 2 && args[0].ToUpper().Equals("SETNEXTMODE"))
+					{
+						if (args[1].ToUpper().Equals("DEFAULT"))
+						{
+							GamemodeManager.GamemodeManager.SetNextMode(this.plugin, plugin.GetConfigString("team_respawn_queue"), "Default");
+							return new string[] { "Next mode will be Default" };
+						}
+						else
+						{
+							Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
+							if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
+							{
+								string queue = "-1";
+								if (args.Length >= 3)
+									queue = args[2];
+
+								string name = null;
+								if (args.Length >= 4)
+									name = args[3];
+
+								GamemodeManager.GamemodeManager.SetNextMode(nextmode, queue, name);
+								return new string[] { "Next mode will be " + nextmode.ToString() };
+							}
+							else
+								return new string[] { "Can't find gamemode: " + args[1] };
+						}
 					}
 					else
 					{
-						Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
-						if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
+						string queue = "";
+						foreach (Team team in GamemodeManager.GamemodeManager.CurrentQueue)
 						{
-							GamemodeManager.GamemodeManager.NextMode = nextmode;
-							return new string[] { "Next mode will be " + nextmode.ToString() };
+							queue = queue + (int)team;
 						}
-						else
-							return new string[] { "Can't find gamemode: " + args[1] };
+						return new string[] { (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + " Name:" + GamemodeManager.GamemodeManager.CurrentName + " Queue:" + queue };
 					}
 				}
-				*/
 				else
-				{
-					string queue = "";
-					foreach (Team team in GamemodeManager.GamemodeManager.CurrentQueue)
-					{
-						queue = queue + (int)team;
-					}
-					return new string[] { (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + " Name:" + GamemodeManager.GamemodeManager.CurrentName + " Queue:" + queue };
-				}
+					return new string[] { "Can't find any gamemodes." };
 			}
-			else
-				return new string[] { "Can't find any gamemodes." };
 		}
 	}
 }

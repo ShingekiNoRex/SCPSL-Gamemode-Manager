@@ -1,0 +1,12 @@
+
+*.ide
+*.lock
+Gamemodes/PlagueCurse/.vs/PlagueCurse/v15/.suo
+*.pdb
+GamemodeManager/obj/Debug/GamemodeManager.dll
+*.cache
+GamemodeManager/obj/Debug/GamemodeManager.csproj.FileListAbsolute.txt
+*.CopyComplete
+*.ide-wal
+*.ide-shm
+.vs/GamemodeManager/v15/.suo
