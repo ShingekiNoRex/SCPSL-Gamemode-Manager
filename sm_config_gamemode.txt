@@ -11,7 +11,7 @@
 [rex.gamemode.escortvip]
  - Name: Escort VIP
  - Rounds: 1
- - SpawnQueue: 01111111111111111111
+ - SpawnQueue: 40222220222222022222
  - Description: A Class-D(VIP) spawns with serveral CI in the cell. They need escort VIP to escape from the facility. There are also some SCPs in the facility, as long as they kill VIP, they win.
 [default]
  - Name: Class-D Escape
