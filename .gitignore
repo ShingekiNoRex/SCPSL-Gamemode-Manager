@@ -10,3 +10,5 @@ GamemodeManager/obj/Debug/GamemodeManager.csproj.FileListAbsolute.txt
 *.ide-wal
 *.ide-shm
 .vs/GamemodeManager/v15/.suo
+Gamemodes/PlagueCurse/PlagueCurse/obj/Debug/PlagueCurse.dll
+Gamemodes/PlagueCurse/PlagueCurse/obj/Debug/PlagueCurse.csproj.FileListAbsolute.txt

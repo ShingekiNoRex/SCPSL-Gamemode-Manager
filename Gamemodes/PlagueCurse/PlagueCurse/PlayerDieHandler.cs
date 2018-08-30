@@ -122,7 +122,7 @@ namespace Smod.TestPlugin
         {
             if (GamemodeManager.GamemodeManager.GetCurrentMode().Equals(plugin) && !plugin.pluginManager.Server.Map.WarheadDetonated)
             {
-                if (ev.Attacker != null && ev.Attacker.TeamRole.Role == Role.SCP_049_2)
+                if (ev.Attacker != null && ev.Attacker.TeamRole.Role == Role.SCP_049_2 && ev.Attacker != ev.Player)
                 {
                     ev.Damage = 0.0f;
 					ev.Player.ChangeRole(Role.SCP_049_2);

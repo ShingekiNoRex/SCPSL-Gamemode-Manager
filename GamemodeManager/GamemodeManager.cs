@@ -143,6 +143,17 @@ namespace GamemodeManager
 		{
 			return ModeList;
 		}
+
+		public static string QueueToString(Team[] queue)
+		{
+			string result = "";
+			foreach (Team team in queue)
+			{
+				result = result + (int)team;
+			}
+
+			return result;
+		}
 	}
 }
 
@@ -284,7 +295,7 @@ namespace Smod2.Handler
 					GamemodeManager.GamemodeManager.NextMode = null;
 					GamemodeManager.GamemodeManager.NextName = null;
 					GamemodeManager.GamemodeManager.NextQueue = null;
-					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
+					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue) + ")");
 				}
 				else if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
 				{
@@ -292,7 +303,7 @@ namespace Smod2.Handler
 					GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[ModeCount];
 					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount];
 					GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[ModeCount++];
-					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.CurrentQueue + ")");
+					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue) + ")");
 
 					if (ModeCount >= GamemodeManager.GamemodeManager.ModeList.Count)
 					{
@@ -357,11 +368,7 @@ namespace Smod2.Handler
 						string myList = "Gamemodes List" + "\n";
 						for (int i = 0; i < GamemodeManager.GamemodeManager.ModeList.Count; i++)
 						{
-							string queue = "";
-							foreach (Team team in GamemodeManager.GamemodeManager.SpawnQueue[i])
-							{
-								queue = queue + (int)team;
-							}
+							string queue = GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.SpawnQueue[i]);
 							myList += "[" + (i + 1) + "]" + (GamemodeManager.GamemodeManager.ModeList[i].Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.ModeList[i].ToString()) + " Name:" + GamemodeManager.GamemodeManager.ModeName[i] + " Queue:" + queue + "\n";
 						}
 						return new string[] { myList };
@@ -405,11 +412,7 @@ namespace Smod2.Handler
 					}
 					else
 					{
-						string queue = "";
-						foreach (Team team in GamemodeManager.GamemodeManager.CurrentQueue)
-						{
-							queue = queue + (int)team;
-						}
+						string queue = GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue);
 						return new string[] { (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + " Name:" + GamemodeManager.GamemodeManager.CurrentName + " Queue:" + queue };
 					}
 				}
