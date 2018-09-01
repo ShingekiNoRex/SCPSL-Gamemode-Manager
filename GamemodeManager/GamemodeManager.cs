@@ -19,7 +19,7 @@ namespace Smod2.Plugins
 		version = "2.1",
 		SmodMajor = 3,
 		SmodMinor = 1,
-		SmodRevision = 14
+		SmodRevision = 15
 	)]
 	class PluginGamemodeManager : Plugin
 	{
@@ -37,6 +37,8 @@ namespace Smod2.Plugins
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
 			this.AddCommand("gamemode", new CommandHandler(this));
+			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
+			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
 		}
 	}
 }
@@ -173,8 +175,7 @@ namespace Smod2.Handler
 
 		public void OnPlayerJoin(PlayerJoinEvent ev)
 		{
-			//ev.Player.SendConsoleMessage("\n当前模式: " + GamemodeManager.GamemodeManager.CurrentName + "\n介绍: \n" + GamemodeManager.GamemodeManager.CurrentDescription.Replace("<n>", System.Environment.NewLine), "red");
-			ev.Player.SendConsoleMessage("\nCurrent Mode: " + GamemodeManager.GamemodeManager.CurrentName + "\nDescription: \n" + GamemodeManager.GamemodeManager.CurrentDescription.Replace("<n>", System.Environment.NewLine), "red");
+			ev.Player.SendConsoleMessage(System.Environment.NewLine + plugin.GetTranslation("GM_CURRENT_MODE") + ": " + GamemodeManager.GamemodeManager.CurrentName + System.Environment.NewLine + plugin.GetTranslation("GM_DESCRIPTION") + ": " + System.Environment.NewLine + GamemodeManager.GamemodeManager.CurrentDescription.Replace("<n>", System.Environment.NewLine), "red");
 		}
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
