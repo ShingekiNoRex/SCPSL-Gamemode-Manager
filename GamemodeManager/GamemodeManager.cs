@@ -16,7 +16,7 @@ namespace Smod2.Plugins
 		name = "GamemodeManager",
 		description = "",
 		id = "rex.gamemode.manager",
-		version = "2.0",
+		version = "2.1",
 		SmodMajor = 3,
 		SmodMinor = 1,
 		SmodRevision = 14
