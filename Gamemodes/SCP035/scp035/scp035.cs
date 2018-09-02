@@ -81,7 +81,6 @@ namespace Smod.SCP035
 	class SmodEventHandler : IEventHandlerPlayerDie, IEventHandlerRoundStart, IEventHandlerSetRole, IEventHandlerPlayerHurt, IEventHandlerCheckRoundEnd, IEventHandlerSpawnRagdoll, IEventHandlerInfected, IEventHandlerSetSCPConfig, IEventHandlerPocketDimensionEnter
 	{ 
 		private static List<int> scp_list = new List<int>();
-		private static List<int> hunter_list = new List<int>();
 		private Plugin plugin;
 		//private static bool roundend;
 		//private static bool roundstart;
@@ -106,6 +105,7 @@ namespace Smod.SCP035
 			if (GamemodeManager.GamemodeManager.CurrentMode == plugin)
 			{
 				List<Player> PlayerList = new List<Player>();
+				List<int> hunter_list = new List<int>();
 				scp_list = new List<int>();
 
 				foreach (Player player in ev.Server.GetPlayers())
@@ -119,7 +119,6 @@ namespace Smod.SCP035
 				Random rm = new Random();
 				Player scp035 = PlayerList[rm.Next(PlayerList.Count)];
 				scp_list.Add(scp035.PlayerId);
-				scp035.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_035") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_035_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_035_GOAL"), "red");
 
 				scp035.GiveItem(ItemType.COM15);
 				scp035.GiveItem(ItemType.MEDKIT);
@@ -134,7 +133,6 @@ namespace Smod.SCP035
 					randomplayer.GiveItem(ItemType.MP4);
 					PlayerList.Remove(randomplayer);
 					hunter_list.Add(randomplayer.PlayerId);
-					randomplayer.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_HUNTER") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_HUNTER_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_HUNTER_GOAL"), "red");
 
 					if (PlayerList.Count > 8)
 					{
@@ -142,7 +140,6 @@ namespace Smod.SCP035
 						randomplayer.GiveItem(ItemType.MP4);
 						PlayerList.Remove(randomplayer);
 						hunter_list.Add(randomplayer.PlayerId);
-						randomplayer.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_HUNTER") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_HUNTER_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_HUNTER_GOAL"), "red");
 					}
 
 					if (PlayerList.Count > 10)
@@ -153,7 +150,6 @@ namespace Smod.SCP035
 						randomplayer.GiveItem(ItemType.ZONE_MANAGER_KEYCARD);
 						randomplayer.GiveItem(ItemType.FLASHBANG);
 						scp_list.Add(randomplayer.PlayerId);
-						randomplayer.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_035") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_035_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_035_GOAL"), "red");
 					}
 				}
 
@@ -161,6 +157,35 @@ namespace Smod.SCP035
 				{
 					item.Remove();
 				}
+
+				foreach (Player player in ev.Server.GetPlayers())
+				{
+					if (scp_list.Contains(player.PlayerId))
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_035") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_035_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_035_GOAL"), "red");
+					}
+					else if (hunter_list.Contains(player.PlayerId))
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_HUNTER") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_HUNTER_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_HUNTER_GOAL"), "red");
+					}
+					else if (player.TeamRole.Role == Role.SCIENTIST)
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCIENTIST") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCIENTIST_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCIENTIST_GOAL"), "red");
+					}
+					else if (player.TeamRole.Role == Role.SCP_049)
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_049") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_049_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_049_GOAL"), "red");
+					}
+					else if (player.TeamRole.Role == Role.SCP_106)
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_106") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_106_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_106_GOAL"), "red");
+					}
+					else if (player.TeamRole.Role == Role.CLASSD)
+					{
+						player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_CLASSD") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_CLASSD_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_CLASSD_GOAL"), "red");
+					}
+				}
+
 				//roundend = false;
 				//roundstart = true;
 				allowkill = false;
@@ -261,24 +286,11 @@ namespace Smod.SCP035
 					ev.Player.GiveItem(ItemType.E11_STANDARD_RIFLE);
 					ev.Player.GiveItem(ItemType.DISARMER);
 					ev.Player.GiveItem(ItemType.RADIO);
-					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCIENTIST") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCIENTIST_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCIENTIST_GOAL"), "red");
 				}
 				else if (ev.Role == Role.NTF_SCIENTIST)
 				{
 					ev.Player.GiveItem(ItemType.FLASHBANG);
 					ev.Player.GiveItem(ItemType.DISARMER);
-				}
-				else if (ev.Role == Role.SCP_049)
-				{
-					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_049") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_049_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_049_GOAL"), "red");
-				}
-				else if (ev.Role == Role.SCP_106)
-				{
-					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_106") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_106_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_106_GOAL"), "red");
-				}
-				else if (ev.Role == Role.CLASSD && !scp_list.Contains(ev.Player.PlayerId) && !hunter_list.Contains(ev.Player.PlayerId))
-				{
-					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_CLASSD") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_CLASSD_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_CLASSD_GOAL"), "red");
 				}
 			}
 			//CheckEndCondition();
