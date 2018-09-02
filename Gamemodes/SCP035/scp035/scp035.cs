@@ -81,6 +81,7 @@ namespace Smod.SCP035
 	class SmodEventHandler : IEventHandlerPlayerDie, IEventHandlerRoundStart, IEventHandlerSetRole, IEventHandlerPlayerHurt, IEventHandlerCheckRoundEnd, IEventHandlerSpawnRagdoll, IEventHandlerInfected, IEventHandlerSetSCPConfig, IEventHandlerPocketDimensionEnter
 	{ 
 		private static List<int> scp_list = new List<int>();
+		private static List<int> hunter_list = new List<int>();
 		private Plugin plugin;
 		//private static bool roundend;
 		//private static bool roundstart;
@@ -132,6 +133,7 @@ namespace Smod.SCP035
 					Player randomplayer = PlayerList[rm.Next(PlayerList.Count)];
 					randomplayer.GiveItem(ItemType.MP4);
 					PlayerList.Remove(randomplayer);
+					hunter_list.Add(randomplayer.PlayerId);
 					randomplayer.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_HUNTER") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_HUNTER_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_HUNTER_GOAL"), "red");
 
 					if (PlayerList.Count > 8)
@@ -139,6 +141,7 @@ namespace Smod.SCP035
 						randomplayer = PlayerList[rm.Next(PlayerList.Count)];
 						randomplayer.GiveItem(ItemType.MP4);
 						PlayerList.Remove(randomplayer);
+						hunter_list.Add(randomplayer.PlayerId);
 						randomplayer.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_HUNTER") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_HUNTER_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_HUNTER_GOAL"), "red");
 					}
 
@@ -273,6 +276,10 @@ namespace Smod.SCP035
 				{
 					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_SCP_106") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_SCP_106_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_SCP_106_GOAL"), "red");
 				}
+				else if (ev.Role == Role.CLASSD && !scp_list.Contains(ev.Player.PlayerId) && !hunter_list.Contains(ev.Player.PlayerId))
+				{
+					ev.Player.SendConsoleMessage(Environment.NewLine + plugin.GetTranslation("MODE035_YOU_ARE") + ": " + plugin.GetTranslation("MODE035_CLASSD") + Environment.NewLine + plugin.GetTranslation("MODE035_DESCRIPTION") + ": " + plugin.GetTranslation("MODE035_CLASSD_DESC") + Environment.NewLine + plugin.GetTranslation("MODE035_GOAL") + ": " + plugin.GetTranslation("MODE035_CLASSD_GOAL"), "red");
+				}
 			}
 			//CheckEndCondition();
 		}
@@ -331,8 +338,17 @@ namespace Smod.SCP035
 
 		public void OnPocketDimensionEnter(PlayerPocketDimensionEnterEvent ev)
 		{
-			ev.Damage = 0f;
-			ev.TargetPosition = ev.Player.Get106Portal().Equals(Vector.Zero) ? ev.LastPosition : ev.Player.Get106Portal();
+			Vector portal = Vector.Zero;
+			foreach (Player player in plugin.pluginManager.Server.GetPlayers())
+			{
+				if (player.TeamRole.Role == Role.SCP_106)
+				{
+					portal = player.Get106Portal();
+				}
+			}
+			bool portalExist = Math.Abs(portal.x * portal.y * portal.z) < 1f;
+			portal = new Vector(portal.x, portal.y + 2f, portal.z);
+			ev.TargetPosition = portalExist ? ev.LastPosition : portal;
 		}
 
 		/*
