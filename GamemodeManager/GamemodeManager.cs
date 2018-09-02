@@ -72,7 +72,7 @@ namespace GamemodeManager
 
 			if (spawnqueue.Equals("-1"))
 			{
-				spawnqueue = gamemode.GetConfigString("team_respawn_queue");
+				spawnqueue = ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340");
 			}
 
 			List<Team> classTeamQueue = new List<Team>();
