@@ -395,7 +395,7 @@ namespace Smod2.Handler
 		{
 			if (args.Length == 1 && args[0].ToUpper().Equals("HELP"))
 			{
-				return new string[] { "Gamemode Command List" + "\n" + "gamemode - Show the current gamemode." + "\n" + "gamemode help - Show the usage of gamemode command." + "\n" + "gamemode list - Show the list of gamemodes." + "\n" + "gamemode setnextmode <plugin id> <spawn queue> <name> - Set the gamemode of next round." + "\n" + "gamemode enable - Enable gamemodes." + "\n" + "gamemode disable - Disable all gamemodes." };
+				return new string[] { "Gamemode Command List" + "\n" + "gamemode - Show the current gamemode." + "\n" + "gamemode help - Show the usage of gamemode command." + "\n" + "gamemode list - Show the list of gamemodes." + "\n" + "gamemode setnextmode {<template name>|<plugin id> <spawn queue> <name>} - Set the gamemode of next round." + "\n" + "gamemode enable - Enable gamemodes." + "\n" + "gamemode disable - Disable all gamemodes." };
 			}
 			else
 			{
@@ -423,29 +423,43 @@ namespace Smod2.Handler
 					}
 					else if (args.Length >= 2 && args[0].ToUpper().Equals("SETNEXTMODE"))
 					{
-						if (args[1].ToUpper().Equals("DEFAULT"))
+						if (args[1].Contains("."))
 						{
-							GamemodeManager.GamemodeManager.SetNextMode(this.plugin, plugin.GetConfigString("team_respawn_queue"), "Default");
-							return new string[] { "Next mode will be Default" };
+							if (args[1].ToUpper().Equals("DEFAULT"))
+							{
+								GamemodeManager.GamemodeManager.SetNextMode(this.plugin, plugin.GetConfigString("team_respawn_queue"), "Default");
+								return new string[] { "Next mode will be Default" };
+							}
+							else
+							{
+								Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
+								if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
+								{
+									string queue = "-1";
+									if (args.Length >= 3)
+										queue = args[2];
+
+									string name = null;
+									if (args.Length >= 4)
+										name = args[3];
+
+									GamemodeManager.GamemodeManager.SetNextMode(nextmode, queue, name);
+									return new string[] { "Next mode will be " + nextmode.ToString() };
+								}
+								else
+									return new string[] { "Can't find gamemode: " + args[1] };
+							}
 						}
 						else
 						{
-							Plugin nextmode = PluginManager.Manager.GetEnabledPlugin(args[1]);
-							if (nextmode != null && nextmode.Details.id.Contains("gamemode") && !nextmode.Equals(plugin))
+							if (GamemodeManager.GamemodeManager.Template.Contains(args[1]))
 							{
-								string queue = "-1";
-								if (args.Length >= 3)
-									queue = args[2];
-
-								string name = null;
-								if (args.Length >= 4)
-									name = args[3];
-
-								GamemodeManager.GamemodeManager.SetNextMode(nextmode, queue, name);
-								return new string[] { "Next mode will be " + nextmode.ToString() };
+								int queue = GamemodeManager.GamemodeManager.Template.FindIndex(x => x.Equals(args[1]));
+								GamemodeManager.GamemodeManager.SetNextMode(GamemodeManager.GamemodeManager.ModeList[queue], GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.SpawnQueue[queue]), GamemodeManager.GamemodeManager.ModeName[queue]);
+								return new string[] { "Next mode will be " + args[1] };
 							}
 							else
-								return new string[] { "Can't find gamemode: " + args[1] };
+								return new string[] { "Can't find template: " + args[1] };
 						}
 					}
 					else
