@@ -68,7 +68,7 @@ namespace scp035
 				{ "MODE035_CLASSD_GOAL", "Kill SCP-035." }
 			};
 
-			foreach (var translation in translations)
+			foreach (KeyValuePair<string, string> translation in translations)
 			{
 				this.AddTranslation(new LangSetting(translation.Key, translation.Value, "gamemode_scp035"));
 			}

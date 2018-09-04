@@ -3,6 +3,9 @@ A framework that supports different gamemodes in one single server.
 
 Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify gamemodes.
 
+# Config
+`gm_round_sequence: {15%template1|20%template2|template3}, template4`
+
 # Command
 **gamemode** - Show the current gamemode.
 

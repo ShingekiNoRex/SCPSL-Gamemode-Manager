@@ -36,6 +36,7 @@ namespace Smod2.Plugins
 		{
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
+			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", "", Config.SettingType.LIST, true, ""));
 			this.AddCommand("gamemode", new CommandHandler(this));
 			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
 			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
@@ -56,6 +57,7 @@ namespace GamemodeManager
 		public static string CurrentDescription;
 		public static List<Plugin> ModeList = new List<Plugin>();
 		public static List<Team[]> SpawnQueue = new List<Team[]>();
+		public static List<string> Template = new List<string>();
 		public static List<string> ModeName = new List<string>();
 		public static List<string> Descriptions = new List<string>();
 		public static bool DisableAll;
@@ -187,11 +189,13 @@ namespace Smod2.Handler
 				{
 					int queue = -1;
 					List<Plugin> modeList = new List<Plugin>();
+					List<string> template = new List<string>();
 					List<string> name = new List<string>();
 					List<int> rounds = new List<int>();
 					List<string> spawnqueue = new List<string>();
 					List<string> description = new List<string>();
 					GamemodeManager.GamemodeManager.ModeList.Clear();
+					GamemodeManager.GamemodeManager.Template.Clear();
 					GamemodeManager.GamemodeManager.ModeName.Clear();
 					GamemodeManager.GamemodeManager.SpawnQueue.Clear();
 					GamemodeManager.GamemodeManager.Descriptions.Clear();
@@ -214,6 +218,7 @@ namespace Smod2.Handler
 							}
 							queue++;
 							modeList.Add(gamemode);
+							template.Add("");
 							name.Add(gamemode.Equals(this.plugin) ? "Default" : gamemode.Details.name);
 							rounds.Add(0);
 							spawnqueue.Add("40143140314414041340");
@@ -225,6 +230,11 @@ namespace Smod2.Handler
 							keyvalue[0] = keyvalue[0].Replace("-", string.Empty).Trim();
 							switch(keyvalue[0].ToUpper())
 							{
+								case "TEMPLATENAME":
+									{
+										template[queue] = keyvalue[1];
+										break;
+									}
 								case "NAME":
 									{
 										name[queue] = keyvalue[1];
@@ -253,6 +263,7 @@ namespace Smod2.Handler
 						for (int j = 0; j < rounds[i]; j ++)
 						{
 							GamemodeManager.GamemodeManager.ModeList.Add(modeList[i]);
+							GamemodeManager.GamemodeManager.Template.Add(template[i]);
 							GamemodeManager.GamemodeManager.ModeName.Add(name[i]);
 							GamemodeManager.GamemodeManager.Descriptions.Add(description[i]);
 							List<Team> classTeamQueue = new List<Team>();
@@ -270,10 +281,18 @@ namespace Smod2.Handler
 					}
 				}
 
-				GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[0];
-				GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[0];
-				GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[0];
-				GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[0];
+				int queue2 = 0;
+				List<string> templates = new List<string>(ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
+				if (templates.Count > 0 && !string.IsNullOrEmpty(templates[0]) && GamemodeManager.GamemodeManager.Template.Contains(templates[0]))
+				{
+					queue2 = GamemodeManager.GamemodeManager.Template.FindIndex(x => x.Equals(templates[0]));
+				}
+
+				GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[queue2];
+				GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[queue2];
+				GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[queue2];
+				GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[queue2];
+				ModeCount++;
 				FirstRound = true;
 			}
 		}
@@ -300,15 +319,33 @@ namespace Smod2.Handler
 				}
 				else if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
 				{
-					GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[ModeCount];
-					GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[ModeCount];
-					GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount];
-					GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[ModeCount++];
-					plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue) + ")");
-
-					if (ModeCount >= GamemodeManager.GamemodeManager.ModeList.Count)
+					List<string> templates = new List<string>(ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
+					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[ModeCount]) && GamemodeManager.GamemodeManager.Template.Contains(templates[ModeCount]))
 					{
-						ModeCount = 0;
+						int queue = GamemodeManager.GamemodeManager.Template.FindIndex(x => x.Equals(templates[ModeCount]));
+						GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[queue];
+						GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[queue];
+						GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[queue];
+						GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[queue];
+						plugin.Info("Changing mode to [" + templates[ModeCount] + "] [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue) + ")");
+						ModeCount++;
+						if (ModeCount >= templates.Count)
+						{
+							ModeCount = 0;
+						}
+					}
+					else
+					{
+						GamemodeManager.GamemodeManager.CurrentMode = GamemodeManager.GamemodeManager.ModeList[ModeCount];
+						GamemodeManager.GamemodeManager.CurrentName = GamemodeManager.GamemodeManager.ModeName[ModeCount];
+						GamemodeManager.GamemodeManager.CurrentQueue = GamemodeManager.GamemodeManager.SpawnQueue[ModeCount];
+						GamemodeManager.GamemodeManager.CurrentDescription = GamemodeManager.GamemodeManager.Descriptions[ModeCount++];
+						plugin.Info("Changing mode to [" + (GamemodeManager.GamemodeManager.CurrentMode.Equals(this.plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.GamemodeManager.CurrentName + ") (" + GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue) + ")");
+
+						if (ModeCount >= GamemodeManager.GamemodeManager.ModeList.Count)
+						{
+							ModeCount = 0;
+						}
 					}
 				}
 			}
