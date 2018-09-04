@@ -13,7 +13,7 @@ Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify
 
 **gamemode list** - Show the list of gamemodes.
 
-**gamemode setnextmode [plugin id] [spawn queue] [name]** - Set the mode of next round.
+**gamemode setnextmode { [template name] | [plugin id] [spawn queue] [name] }** - Set the mode of next round.
 
 **gamemode enable** - Enable gamemodes.
 
