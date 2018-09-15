@@ -16,10 +16,10 @@ namespace scp035
 		name = "scp035",
 		description = "",
 		id = "rex.gamemode.scp035",
-		version = "2.1",
+		version = "2.2",
 		SmodMajor = 3,
 		SmodMinor = 1,
-		SmodRevision = 15
+		SmodRevision = 17
 	)]
 	class SCP035 : Plugin
 	{
@@ -35,7 +35,7 @@ namespace scp035
 		public override void Register()
 		{
 			this.AddEventHandlers(new SmodEventHandler(this), Priority.Normal);
-			GamemodeManager.GamemodeManager.RegisterMode(this, "43444404444344434444");
+			GamemodeManager.GamemodeManager.RegisterMode(this, "43444404040344434444");
 
 			Dictionary<string, string> translations = new Dictionary<string, string>
 			{
@@ -92,12 +92,15 @@ namespace Smod.SCP035
 
 		public void OnSetSCPConfig(SetSCPConfigEvent ev)
 		{
-			ev.Ban049 = false;
-			ev.Ban096 = true;
-			ev.Ban106 = false;
-			ev.Ban173 = true;
-			ev.Ban939_53 = true;
-			ev.Ban939_89 = true;
+			if (GamemodeManager.GamemodeManager.CurrentMode == plugin)
+			{
+				ev.Ban049 = false;
+				ev.Ban096 = true;
+				ev.Ban106 = false;
+				ev.Ban173 = true;
+				ev.Ban939_53 = false;
+				ev.Ban939_89 = false;
+			}
 		}
 
 		public void OnRoundStart(RoundStartEvent ev)
@@ -127,14 +130,14 @@ namespace Smod.SCP035
 
 				PlayerList.Remove(scp035);
 
-				if (PlayerList.Count > 4)
+				if (PlayerList.Count > 3)
 				{
 					Player randomplayer = PlayerList[rm.Next(PlayerList.Count)];
 					randomplayer.GiveItem(ItemType.MP4);
 					PlayerList.Remove(randomplayer);
 					hunter_list.Add(randomplayer.PlayerId);
 
-					if (PlayerList.Count > 8)
+					if (PlayerList.Count > 6)
 					{
 						randomplayer = PlayerList[rm.Next(PlayerList.Count)];
 						randomplayer.GiveItem(ItemType.MP4);
@@ -142,7 +145,7 @@ namespace Smod.SCP035
 						hunter_list.Add(randomplayer.PlayerId);
 					}
 
-					if (PlayerList.Count > 10)
+					if (PlayerList.Count > 8)
 					{
 						randomplayer = PlayerList[rm.Next(PlayerList.Count)];
 						randomplayer.GiveItem(ItemType.COM15);
@@ -283,14 +286,14 @@ namespace Smod.SCP035
 
 				if (ev.Role == Role.SCIENTIST)
 				{
-					ev.Player.GiveItem(ItemType.E11_STANDARD_RIFLE);
-					ev.Player.GiveItem(ItemType.DISARMER);
-					ev.Player.GiveItem(ItemType.RADIO);
+					ev.Items.Add(ItemType.E11_STANDARD_RIFLE);
+					ev.Items.Add(ItemType.DISARMER);
+					ev.Items.Add(ItemType.RADIO);
 				}
 				else if (ev.Role == Role.NTF_SCIENTIST)
 				{
-					ev.Player.GiveItem(ItemType.FLASHBANG);
-					ev.Player.GiveItem(ItemType.DISARMER);
+					ev.Items.Add(ItemType.FLASHBANG);
+					ev.Items.Add(ItemType.DISARMER);
 				}
 			}
 			//CheckEndCondition();
