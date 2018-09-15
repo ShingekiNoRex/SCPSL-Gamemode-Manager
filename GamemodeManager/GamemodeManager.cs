@@ -36,7 +36,7 @@ namespace Smod2.Plugins
 		{
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
-			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", "", Config.SettingType.LIST, true, ""));
+			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", new string[] { "" }, Config.SettingType.LIST, true, ""));
 			this.AddCommand("gamemode", new CommandHandler(this));
 			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
 			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
