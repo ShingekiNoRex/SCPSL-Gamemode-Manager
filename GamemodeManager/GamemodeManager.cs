@@ -12,7 +12,7 @@ using System.IO;
 namespace Smod2.Plugins
 {
 	[PluginDetails(
-		author = "ShingekiNoRex",
+		author = "ShingekiNoRex | lordofkhaos",
 		name = "GamemodeManager",
 		description = "",
 		id = "rex.gamemode.manager",
@@ -36,10 +36,26 @@ namespace Smod2.Plugins
 		{
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
+			this.AddConfig(new Config.ConfigSetting("gm_enable", true, Config.SettingType.BOOL, true, "enables GameModes for the current server"));
 			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", new string[] { "" }, Config.SettingType.LIST, true, ""));
 			this.AddCommand("gamemode", new CommandHandler(this));
 			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
 			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
+		}
+	}
+
+	internal class GMEvents : IEventHandlerWaitingForPlayers
+	{
+		private Plugin plugin;
+
+		public GMEvents(Plugin plugin)
+		{
+			this.plugin = plugin;
+		}
+
+		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
+		{
+			if (!ConfigManager.Manager.Config.GetBoolValue("gm_enable", true, false)) this.plugin.pluginManager.DisablePlugin(plugin);
 		}
 	}
 }
