@@ -55,7 +55,7 @@ namespace Smod2.Plugins
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!ConfigManager.Manager.Config.GetBoolValue("gm_enable", true, false)) this.plugin.pluginManager.DisablePlugin(plugin);
+			if (!plugin.GetConfigBool("gm_enable", true, false)) this.plugin.pluginManager.DisablePlugin(plugin);
 		}
 	}
 }
