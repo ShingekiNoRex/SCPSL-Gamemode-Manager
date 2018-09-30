@@ -43,21 +43,6 @@ namespace Smod2.Plugins
 			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
 		}
 	}
-
-	internal class GMEvents : IEventHandlerWaitingForPlayers
-	{
-		private Plugin plugin;
-
-		public GMEvents(Plugin plugin)
-		{
-			this.plugin = plugin;
-		}
-
-		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
-		{
-			if (!plugin.GetConfigBool("gm_enable", true, false)) this.plugin.pluginManager.DisablePlugin(plugin);
-		}
-	}
 }
 
 namespace GamemodeManager
@@ -198,6 +183,7 @@ namespace Smod2.Handler
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
+			if (!plugin.GetConfigBool("gm_enable", true, false)) this.plugin.pluginManager.DisablePlugin(plugin);
 			if (!FirstRound)
 			{
 				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
