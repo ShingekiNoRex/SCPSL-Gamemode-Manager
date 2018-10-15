@@ -1,13 +1,4 @@
-﻿using Smod2;
-using Smod2.Attributes;
-using Smod2.API;
-using Smod2.Commands;
-using Smod2.Handler;
-using System.Collections.Generic;
-using Smod2.EventHandlers;
-using Smod2.EventSystem.Events;
-using Smod2.Events;
-using System.IO;
+﻿using Smod2.Commands;
 
 namespace Smod2.Handler
 {
