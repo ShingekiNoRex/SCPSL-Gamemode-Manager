@@ -26,7 +26,7 @@ namespace Smod2.Handler
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!plugin.GetConfigBool("gm_enable")) this.plugin.pluginManager.DisablePlugin(plugin);
+			if (!plugin.GetConfigBool("gm_enable")) this.plugin.PluginManager.DisablePlugin(plugin);
 			if (!FirstRound)
 			{
 				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
@@ -51,7 +51,7 @@ namespace Smod2.Handler
 						if (line.Contains("[") && line.Contains("]"))
 						{
 							string pluginid = line.Replace("[", string.Empty).Replace("]", string.Empty);
-							Plugin gamemode = plugin.pluginManager.GetEnabledPlugin(pluginid);
+							Plugin gamemode = plugin.PluginManager.GetEnabledPlugin(pluginid);
 							if (pluginid.ToUpper().Equals("DEFAULT"))
 							{
 								gamemode = this.plugin;
