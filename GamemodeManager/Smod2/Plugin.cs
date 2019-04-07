@@ -8,10 +8,10 @@ namespace Smod2.Plugins
 		name = "GamemodeManager",
 		description = "",
 		id = "rex.gamemode.manager",
-		version = "2.2",
+		version = "2.3",
 		SmodMajor = 3,
-		SmodMinor = 1,
-		SmodRevision = 15
+		SmodMinor = 4,
+		SmodRevision = 0
 	)]
 	class PluginGamemodeManager : Plugin
 	{
@@ -28,8 +28,8 @@ namespace Smod2.Plugins
 		{
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
-			this.AddConfig(new Config.ConfigSetting("gm_enable", true, Config.SettingType.BOOL, true, "enables GameModes for the current server"));
-			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", new string[] { "" }, Config.SettingType.LIST, true, ""));
+			this.AddConfig(new Config.ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
+			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", new string[] { "" }, true, "")); // list
 			this.AddCommand("gamemode", new CommandHandler(this));
 			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
 			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
