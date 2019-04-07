@@ -1,23 +1,19 @@
-.obj/*
+# Ignore Directories
+**/.obj/*
+**/.vs/*
+**/bin/Debug/*
+
+# Ignore Extensions
 *.ide
 *.lock
-Gamemodes/PlagueCurse/.vs/PlagueCurse/v15/.suo
 *.pdb
-GamemodeManager/obj/Debug/GamemodeManager.dll
 *.cache
-GamemodeManager/obj/Debug/GamemodeManager.csproj.FileListAbsolute.txt
 *.CopyComplete
 *.ide-wal
 *.ide-shm
-.vs/GamemodeManager/v15/.suo
-Gamemodes/PlagueCurse/PlagueCurse/obj/Debug/PlagueCurse.dll
-Gamemodes/PlagueCurse/PlagueCurse/obj/Debug/PlagueCurse.csproj.FileListAbsolute.txt
-Gamemodes/SCP035/scp035/bin/Debug/GamemodeManager.dll
-Gamemodes/SCP035/scp035/bin/Debug/scp035.dll
-Gamemodes/SCP035/scp035/bin/Debug/Smod2.dll
-Gamemodes/SCP035/scp035/obj/Debug/scp035.csproj.FileListAbsolute.txt
-Gamemodes/SCP035/scp035/obj/Debug/scp035.dll
-Gamemodes/SCP035/.vs/scp035/v15/.suo
-.vs/GamemodeManager/xs/UserPrefs.xml
+*.suo
+
+# Ignore Specific Files
 .DS_Store
 GamemodeManager.sln.DotSettings.user
+GamemodeManager/obj/Debug/GamemodeManager.csproj.FileListAbsolute.txt
