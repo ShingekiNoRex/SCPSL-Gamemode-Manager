@@ -3,7 +3,7 @@ using Smod2.Commands;
 
 namespace Smod2.Handler
 {
-	class CommandHandler : ICommandHandler
+	internal class CommandHandler : ICommandHandler
 	{
 		private readonly Plugin _plugin;
 		public CommandHandler(Plugin plugin)
