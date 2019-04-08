@@ -22,6 +22,20 @@ namespace Smod2.Handler
 		}
 
 		public string[] OnCall(ICommandSender sender, string[] args)
+
+		public string[] HelpMessage() =>
+			new[]
+			{
+				"Gamemode Command List",
+				"gamemode - Show the current gamemode.",
+				"gamemode help - Show the usage of gamemode command.",
+				"gamemode list - Show the list of gamemodes.",
+				"gamemode setnextmode {<template name>|<plugin id> <spawn queue> <name>} - Set the gamemode of next round.",
+				"gamemode enable - Enable gamemodes.",
+				"gamemode disable - Disable all gamemodes."
+			};
+
+		public string[] HelpMessage(string cmd)
 		{
 			if (args.Length == 1 && args[0].ToUpper().Equals("HELP"))
 			{
@@ -35,6 +49,33 @@ namespace Smod2.Handler
 					"gamemode enable - Enable gamemodes.",
 					"gamemode disable - Disable all gamemodes."
 				};
+				case "LIST":
+					return new[]
+					{
+						"LIST",
+						"Lists all of the gamemodes available. No arguments."
+					};
+				case "ENABLE":
+					return new[]
+					{
+						"ENABLE",
+						"Enables gamemodes for the current session",
+						"N.B.: Overriden by config \"gm_enable\" at round start."
+					};
+				case "DISABLE":
+					return new[]
+					{
+						"DISABLE",
+						"Disables gamemodes for the current session",
+						"N.B.: Overriden by config \"gm_enable\" at round start."
+					};
+				case "SETNEXTMODE":
+					return new[]
+					{
+						"SETNEXTMODE (TEMPLATE NAME | PLUGIN ID) <QUEUE> <NAME>",
+						"Set the gamemode of the next round.",
+						"() Denotes a required parameter."
+					};
 			}
 
 			if (GamemodeManager.GamemodeManager.ModeList.Count > 0)
