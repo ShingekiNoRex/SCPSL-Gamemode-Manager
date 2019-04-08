@@ -26,7 +26,7 @@ namespace Smod2.Handler
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!plugin.GetConfigBool("gm_enable")) this.plugin.PluginManager.DisablePlugin(plugin);
+			if (!plugin.GetConfigBool("gm_enable")) GamemodeManager.GamemodeManager.DisableAll = true;
 			if (!FirstRound)
 			{
 				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
