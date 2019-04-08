@@ -6,20 +6,64 @@ namespace GamemodeManager
 {
 	public abstract class GamemodeManager
 	{
+		/// <summary>
+		/// The gamemode currently in use
+		/// </summary>
 		public static Plugin CurrentMode;
+		/// <summary>
+		/// The next gamemode in the queue
+		/// </summary>
 		public static Plugin NextMode;
+		/// <summary>
+		/// The current team respawn queue
+		/// </summary>
 		public static Team[] CurrentQueue;
+		/// <summary>
+		/// The next team respawn queue
+		/// </summary>
 		public static Team[] NextQueue;
+		/// <summary>
+		/// The name of the current gamemode
+		/// </summary>
 		public static string CurrentName;
+		/// <summary>
+		/// The name of the next gamemode
+		/// </summary>
 		public static string NextName;
+		/// <summary>
+		/// The description of the current gamemode
+		/// </summary>
 		public static string CurrentDescription;
+		/// <summary>
+		/// A list of all registered gamemodes
+		/// </summary>
 		public static List<Plugin> ModeList = new List<Plugin>();
+		/// <summary>
+		/// 
+		/// </summary>
 		public static List<Team[]> SpawnQueue = new List<Team[]>();
+		/// <summary>
+		/// 
+		/// </summary>
 		public static List<string> Template = new List<string>();
+		/// <summary>
+		/// A list of the names of all registered gamemodes
+		/// </summary>
 		public static List<string> ModeName = new List<string>();
+		/// <summary>
+		/// 
+		/// </summary>
 		public static List<string> Descriptions = new List<string>();
+		/// <summary>
+		/// Disable all gamemode actions
+		/// </summary>
 		public static bool DisableAll;
 
+		/// <summary>
+		/// Register a gamemode
+		/// </summary>
+		/// <param name="gamemode">The gamemode to be registered</param>
+		/// <param name="spawnqueue">The spawn queue to be associated with the registered mode</param>
 		public static void RegisterMode(Plugin gamemode, string spawnqueue = "-1")
 		{
 			CurrentMode = gamemode;
@@ -49,6 +93,12 @@ namespace GamemodeManager
 			SpawnQueue.Add(CurrentQueue);
 		}
 
+		/// <summary>
+		/// Method to set the next gamemode
+		/// </summary>
+		/// <param name="gamemode">The plugin to be used as the next gamemode</param>
+		/// <param name="spawnqueue">The spawnqueue to be associated with the gamemode</param>
+		/// <param name="name">The name of the gamemode</param>
 		public static void SetNextMode(Plugin gamemode, string spawnqueue = "-1", string name = null)
 		{
 			NextMode = gamemode;
