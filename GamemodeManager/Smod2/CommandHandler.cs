@@ -1,4 +1,5 @@
-﻿using Smod2.Commands;
+﻿using System;
+using Smod2.Commands;
 
 namespace Smod2.Handler
 {
