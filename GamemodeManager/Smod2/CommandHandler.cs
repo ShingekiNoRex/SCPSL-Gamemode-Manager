@@ -25,7 +25,16 @@ namespace Smod2.Handler
 		{
 			if (args.Length == 1 && args[0].ToUpper().Equals("HELP"))
 			{
-				return new string[] { "Gamemode Command List" + "\n" + "gamemode - Show the current gamemode." + "\n" + "gamemode help - Show the usage of gamemode command." + "\n" + "gamemode list - Show the list of gamemodes." + "\n" + "gamemode setnextmode {<template name>|<plugin id> <spawn queue> <name>} - Set the gamemode of next round." + "\n" + "gamemode enable - Enable gamemodes." + "\n" + "gamemode disable - Disable all gamemodes." };
+				return new string[]
+				{
+					"Gamemode Command List",
+					"gamemode - Show the current gamemode.",
+					"gamemode help - Show the usage of gamemode command.",
+					"gamemode list - Show the list of gamemodes.",
+					"gamemode setnextmode {<template name>|<plugin id> <spawn queue> <name>} - Set the gamemode of next round.",
+					"gamemode enable - Enable gamemodes.",
+					"gamemode disable - Disable all gamemodes."
+				};
 			}
 			else
 			{
