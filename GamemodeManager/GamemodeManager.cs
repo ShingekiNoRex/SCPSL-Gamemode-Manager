@@ -1,6 +1,7 @@
 ﻿using Smod2;
 using Smod2.API;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace GamemodeManager
 {
@@ -79,7 +80,8 @@ namespace GamemodeManager
 				spawnqueue = ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340");
 			}
 
-			List<Team> classTeamQueue = new List<Team>();
+			List<Team> classTeamQueue = spawnqueue.Cast<Team>().ToList();
+			/*List<Team> classTeamQueue = new List<Team>();					// old code
 			for (int i = 0; i < spawnqueue.Length; i++)
 			{
 				int item = 4;
@@ -88,7 +90,7 @@ namespace GamemodeManager
 					item = 4;
 				}
 				classTeamQueue.Add((Team)item);
-			}
+			}*/
 			CurrentQueue = classTeamQueue.ToArray();
 			SpawnQueue.Add(CurrentQueue);
 		}
