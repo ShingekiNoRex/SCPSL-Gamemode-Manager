@@ -1,5 +1,5 @@
 # Ignore Directories
-**/.obj/*
+**/obj/*
 **/.vs/*
 **/bin/Debug/*
 
