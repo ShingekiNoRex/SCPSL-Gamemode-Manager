@@ -136,9 +136,12 @@ namespace Smod2.Handler
 					if (!args[1].Contains(".")) return HelpMessage("setnextmode");
 
 					Plugin nextMode = PluginManager.Manager.GetEnabledPlugin(args[1]);
-					if (nextMode == null || !nextMode.Details.id.Contains("gamemode") ||
-					    nextMode.Equals(_plugin))
-						return new string[] {"Can't find gamemode: " + args[1]};
+					if (nextMode == null)
+					    return new[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " is null"};
+					if (!nextMode.Details.id.Contains("gamemode"))
+					    return new[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " does not contain 'gamemode'"};
+					if (nextMode.Equals(_plugin))
+						return new string[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " equals DEFAULT"};
 					string queue = "-1";
 					if (args.Length >= 3)
 						queue = args[2];
