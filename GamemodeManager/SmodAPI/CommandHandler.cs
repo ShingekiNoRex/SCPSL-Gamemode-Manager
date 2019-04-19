@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using Smod2.Commands;
+using Smod2;
 
-namespace Smod2.Handler
+namespace GamemodeManager.SmodAPI
 {
+
 	internal class CommandHandler : ICommandHandler
 	{
-		private readonly Plugin _plugin;
+		private readonly PluginGamemodeManager _plugin;
 
-		public CommandHandler(Plugin plugin)
+		public CommandHandler(PluginGamemodeManager plugin)
 		{
 			this._plugin = plugin;
 		}
@@ -85,25 +87,25 @@ namespace Smod2.Handler
 				case "LIST":
 				{
 					List<string> gamemodeList = new List<string> {"Gamemodes List"};
-					for (int i = 0; i < GamemodeManager.GamemodeManager.ModeList.Count; i++)
+					for (int i = 0; i < GamemodeManager.ModeList.Count; i++)
 					{
 						string queue =
-							GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager
+							GamemodeManager.QueueToString(GamemodeManager
 								.SpawnQueue[i]);
 						gamemodeList.Add("[" + (i + 1) + "]" +
-											(GamemodeManager.GamemodeManager.ModeList[i]
+											(GamemodeManager.ModeList[i]
 												.Equals(this._plugin)
 												? "Default"
-												: GamemodeManager.GamemodeManager.ModeList[i].ToString()
+												: GamemodeManager.ModeList[i].ToString()
 											)
-											+ " Name:" + GamemodeManager.GamemodeManager.ModeName[i] + " Queue:" + queue);
+											+ " Name:" + GamemodeManager.ModeName[i] + " Queue:" + queue);
 					}
 
 					return gamemodeList.ToArray();
 				}
 				case "ENABLE":
 				{
-					GamemodeManager.GamemodeManager.DisableAll = false;
+					GamemodeManager.DisableAll = false;
 					if (args.Length < 2)
 						return new[]
 					{
@@ -114,21 +116,21 @@ namespace Smod2.Handler
 					{
 						if (int.TryParse(args[1], out int enabledRounds))
 						{
-							GamemodeManager.GamemodeManager.EnabledRounds = (uint)enabledRounds;
+							GamemodeManager.EnabledRounds = (uint)enabledRounds;
 							return new[] { $"Gamemodes will be enabled for the following rounds {enabledRounds}" };
 						}
 
 						else
 						{
-							GamemodeManager.GamemodeManager.EnabledRounds = 1;
+							GamemodeManager.EnabledRounds = 1;
 							return new[] { $"{args[1]} is not an integer", "Gamemodes will be enabled in this round" };
 						}
 					}
 				}
 				case "DISABLE":
 				{
-					GamemodeManager.GamemodeManager.DisableAll = true;
-					GamemodeManager.GamemodeManager.EnabledRounds = 0;
+					GamemodeManager.DisableAll = true;
+					GamemodeManager.EnabledRounds = 0;
 					return new[]
 					{
 						"Gamemodes will be disabled in the following rounds.",
@@ -142,7 +144,7 @@ namespace Smod2.Handler
 
 					if (args[1].ToUpper().Equals("DEFAULT"))
 					{
-						GamemodeManager.GamemodeManager.SetNextMode(this._plugin,
+						GamemodeManager.SetNextMode(this._plugin,
 							_plugin.GetConfigString("team_respawn_queue"), "Default");
 						return new string[] {"Next mode will be Default"};
 					}
@@ -162,7 +164,7 @@ namespace Smod2.Handler
 					string name = null;
 					if (args.Length >= 4)
 						name = args[3];
-					GamemodeManager.GamemodeManager.SetNextMode(nextMode, queue, name);
+					GamemodeManager.SetNextMode(nextMode, queue, name);
 					return new string[] {"Next mode will be " + nextMode.ToString()};
 
 				}
@@ -171,13 +173,13 @@ namespace Smod2.Handler
 				{
 			return new[]
 					{
-						(GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) 
+						(GamemodeManager.CurrentMode.Equals(this._plugin) ? "Default" : GamemodeManager.CurrentMode.ToString()) 
 						+ " Name:"
-						+ GamemodeManager.GamemodeManager.CurrentName 
+						+ GamemodeManager.CurrentName 
 						+ " Queue:"
-						+ (GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin)
+						+ (GamemodeManager.CurrentMode.Equals(this._plugin)
 							? ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340")
-							: GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue))
+							: GamemodeManager.QueueToString(GamemodeManager.CurrentQueue))
 					};
 				}
 			}

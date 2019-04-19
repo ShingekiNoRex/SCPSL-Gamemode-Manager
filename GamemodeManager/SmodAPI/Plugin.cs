@@ -1,7 +1,8 @@
 ﻿using Smod2.Attributes;
-using Smod2.Handler;
+using Smod2.Config;
+using Smod2.Lang;
 
-namespace Smod2.Plugins
+namespace GamemodeManager.SmodAPI
 {
 	[PluginDetails(
 		author = "ShingekiNoRex | lordofkhaos",
@@ -13,7 +14,7 @@ namespace Smod2.Plugins
 		SmodMinor = 4,
 		SmodRevision = 0
 	)]
-	class PluginGamemodeManager : Plugin
+	internal class PluginGamemodeManager : Smod2.Plugin
 	{
 		public override void OnDisable()
 		{
@@ -28,11 +29,11 @@ namespace Smod2.Plugins
 		{
 			// Register Events
 			this.AddEventHandlers(new SmodEventHandler(this));
-			this.AddConfig(new Config.ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
-			this.AddConfig(new Config.ConfigSetting("gm_round_sequence", new string[] { "" }, true, "")); // list
+			this.AddConfig(new ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
+			this.AddConfig(new ConfigSetting("gm_round_sequence", new [] { string.Empty }, true, string.Empty)); // list
 			this.AddCommand("gamemode", new CommandHandler(this));
-			this.AddTranslation(new Lang.LangSetting("GM_CURRENT_MODE", "Current Mode"));
-			this.AddTranslation(new Lang.LangSetting("GM_DESCRIPTION", "Description"));
+			this.AddTranslation(new LangSetting("GM_CURRENT_MODE", "Current Mode"));
+			this.AddTranslation(new LangSetting("GM_DESCRIPTION", "Description"));
 		}
 	}
 }
