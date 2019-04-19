@@ -46,7 +46,7 @@ namespace GamemodeManager
 		/// <summary>
 		/// 
 		/// </summary>
-		public static List<string> Template = new List<string>();
+		public static List<string> Templates = new List<string>();
 		/// <summary>
 		/// A list of the names of all registered gamemodes
 		/// </summary>
