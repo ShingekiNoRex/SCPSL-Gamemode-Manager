@@ -74,16 +74,14 @@ namespace Smod2.Handler
 
 		public string[] OnCall(ICommandSender sender, string[] args)
 		{
-			if (args.Length <= 0 || args == null) return HelpMessage();
+			//if (args.Length <= 0 || args == null) return HelpMessage();
 
 			switch (args[0].ToUpper())
 			{
 				case "HELP":
-				{
-					if (args.Length == 1) return HelpMessage();
-					return HelpMessage();
-
-				}
+					{
+						return args.Length == 1 ? this.HelpMessage(args[0]) : this.HelpMessage();
+					}
 				case "LIST":
 				{
 					List<string> gamemodeList = new List<string> {"Gamemodes List"};
