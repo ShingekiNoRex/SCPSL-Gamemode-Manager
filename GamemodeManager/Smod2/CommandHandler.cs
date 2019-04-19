@@ -171,22 +171,13 @@ namespace Smod2.Handler
 				{
 			return new[]
 					{
-						(GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin)
-							 ? "Default"
-							 : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + " Name:"
-																					   + GamemodeManager.GamemodeManager
-																						   .CurrentName + " Queue:"
-																					   + (!GamemodeManager
-																								   .GamemodeManager
-																								   .CurrentMode.Equals(
-																									   this._plugin)
-																							  ? GamemodeManager
-																								  .GamemodeManager
-																								  .QueueToString(
-																									  GamemodeManager
-																										  .GamemodeManager
-																										  .CurrentQueue)
-																							  : "40143140314414041340")
+						(GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin) ? "Default" : GamemodeManager.GamemodeManager.CurrentMode.ToString()) 
+						+ " Name:"
+						+ GamemodeManager.GamemodeManager.CurrentName 
+						+ " Queue:"
+						+ (GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin)
+							? ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340")
+							: GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue))
 					};
 				}
 			}
