@@ -106,11 +106,26 @@ namespace Smod2.Handler
 				case "ENABLE":
 				{
 					GamemodeManager.GamemodeManager.DisableAll = false;
-					return new[]
+					if (args.Length < 2)
+						return new[]
 					{
 						"Gamemodes will be enabled in the following rounds.",
 						"NOTE: This will be overriden by the config option on each round start"
 					};
+					else
+					{
+						if (int.TryParse(args[1], out int enabledRounds))
+						{
+							GamemodeManager.GamemodeManager.EnabledRounds = (uint)enabledRounds;
+							return new[] { $"Gamemodes will be enabled for the following rounds {enabledRounds}" };
+						}
+
+						else
+						{
+							GamemodeManager.GamemodeManager.EnabledRounds = 1;
+							return new[] { $"{args[1]} is not an integer", "Gamemodes will be enabled in this round" };
+						}
+					}
 				}
 				case "DISABLE":
 				{

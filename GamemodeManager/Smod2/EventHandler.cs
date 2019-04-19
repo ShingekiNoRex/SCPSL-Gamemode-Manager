@@ -26,7 +26,7 @@ namespace Smod2.Handler
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!plugin.GetConfigBool("gm_enable")) GamemodeManager.GamemodeManager.DisableAll = true;
+			if (!plugin.GetConfigBool("gm_enable") && GamemodeManager.GamemodeManager.EnabledRounds != 0) GamemodeManager.GamemodeManager.DisableAll = true;
 			if (!FirstRound)
 			{
 				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
@@ -144,7 +144,7 @@ namespace Smod2.Handler
 
 		public void OnRoundRestart(RoundRestartEvent ev)
 		{
-			if (GamemodeManager.GamemodeManager.DisableAll)
+			if (GamemodeManager.GamemodeManager.DisableAll && GamemodeManager.GamemodeManager.EnabledRounds != 0)
 			{
 				GamemodeManager.GamemodeManager.CurrentMode = null;
 				GamemodeManager.GamemodeManager.CurrentName = "Default";
@@ -193,6 +193,8 @@ namespace Smod2.Handler
 						}
 					}
 				}
+
+				GamemodeManager.GamemodeManager.EnabledRounds--;
 			}
 		}
 

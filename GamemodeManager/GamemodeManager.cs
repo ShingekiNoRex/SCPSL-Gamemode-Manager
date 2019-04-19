@@ -61,6 +61,11 @@ namespace GamemodeManager
 		public static bool DisableAll;
 
 		/// <summary>
+		/// The amount of rounds gamemodes will be enabled for
+		/// </summary>
+		public static uint EnabledRounds = 0;
+
+		/// <summary>
 		/// Register a gamemode
 		/// </summary>
 		/// <param name="gamemode">The gamemode to be registered</param>
