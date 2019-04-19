@@ -80,7 +80,7 @@ namespace Smod2.Handler
 			{
 				case "HELP":
 					{
-						return args.Length == 1 ? this.HelpMessage(args[0]) : this.HelpMessage();
+						return args.Length == 1 ? HelpMessage(args[0]) : HelpMessage();
 					}
 				case "LIST":
 				{
@@ -166,19 +166,27 @@ namespace Smod2.Handler
 					return new string[] {"Next mode will be " + nextMode.ToString()};
 
 				}
+
 				default:
 				{
-					string queue =
-						GamemodeManager.GamemodeManager.QueueToString(GamemodeManager.GamemodeManager.CurrentQueue);
-					return new[]
+			return new[]
 					{
 						(GamemodeManager.GamemodeManager.CurrentMode.Equals(this._plugin)
-							? "Default"
-							: GamemodeManager.GamemodeManager.CurrentMode.ToString()) +
-						" Name:" +
-						GamemodeManager.GamemodeManager.CurrentName +
-						" Queue:" +
-						queue
+							 ? "Default"
+							 : GamemodeManager.GamemodeManager.CurrentMode.ToString()) + " Name:"
+																					   + GamemodeManager.GamemodeManager
+																						   .CurrentName + " Queue:"
+																					   + (!GamemodeManager
+																								   .GamemodeManager
+																								   .CurrentMode.Equals(
+																									   this._plugin)
+																							  ? GamemodeManager
+																								  .GamemodeManager
+																								  .QueueToString(
+																									  GamemodeManager
+																										  .GamemodeManager
+																										  .CurrentQueue)
+																							  : "40143140314414041340")
 					};
 				}
 			}
