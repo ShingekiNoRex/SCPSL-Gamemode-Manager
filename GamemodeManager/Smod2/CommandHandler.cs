@@ -128,6 +128,7 @@ namespace Smod2.Handler
 				case "DISABLE":
 				{
 					GamemodeManager.GamemodeManager.DisableAll = true;
+					GamemodeManager.GamemodeManager.EnabledRounds = 0;
 					return new[]
 					{
 						"Gamemodes will be disabled in the following rounds.",

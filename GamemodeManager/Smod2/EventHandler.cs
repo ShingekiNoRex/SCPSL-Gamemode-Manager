@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Smod2.Handler
 {
-	class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
+	class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundStart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
 		private Plugin plugin;
 		public SmodEventHandler(Plugin plugin)
@@ -26,7 +26,12 @@ namespace Smod2.Handler
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			if (!plugin.GetConfigBool("gm_enable") && GamemodeManager.GamemodeManager.EnabledRounds != 0) GamemodeManager.GamemodeManager.DisableAll = true;
+			// debug
+			this.plugin.Info("DEBUG: gm_enable=" + this.plugin.GetConfigBool("gm_enable"));
+			this.plugin.Info("DEBUG: GamemodeManager.GamemodeManager.EnabledRounds=" + GamemodeManager.GamemodeManager.EnabledRounds);
+			// end debug
+
+			if (!this.plugin.GetConfigBool("gm_enable") && GamemodeManager.GamemodeManager.EnabledRounds == 0) GamemodeManager.GamemodeManager.DisableAll = true;
 			if (!FirstRound)
 			{
 				string path = ConfigManager.Manager.Config.GetConfigPath().Replace("config_gameplay.txt", "sm_config_gamemode.txt");
@@ -142,9 +147,9 @@ namespace Smod2.Handler
 			}
 		}
 
-		public void OnRoundRestart(RoundRestartEvent ev)
+		public void OnRoundStart(RoundStartEvent ev)
 		{
-			if (GamemodeManager.GamemodeManager.DisableAll && GamemodeManager.GamemodeManager.EnabledRounds != 0)
+			if (GamemodeManager.GamemodeManager.DisableAll && GamemodeManager.GamemodeManager.EnabledRounds == 0)
 			{
 				GamemodeManager.GamemodeManager.CurrentMode = null;
 				GamemodeManager.GamemodeManager.CurrentName = "Default";
