@@ -24,7 +24,7 @@ namespace Smod2.Handler
 		}
 
 
-		public string[] HelpMessage() =>
+		public static string[] HelpMessage() =>
 			new[]
 			{
 				"Gamemode Command List",
@@ -36,7 +36,7 @@ namespace Smod2.Handler
 				"gamemode disable - Disable all gamemodes."
 			};
 
-		public string[] HelpMessage(string cmd)
+		public static string[] HelpMessage(string cmd)
 		{
 			switch (cmd.ToUpper())
 			{
@@ -74,9 +74,9 @@ namespace Smod2.Handler
 
 		public string[] OnCall(ICommandSender sender, string[] args)
 		{
-			//if (args.Length <= 0 || args == null) return HelpMessage();
+			string input = args.Length == 0 ? " " : args[0];
 
-			switch (args[0].ToUpper())
+			switch (input.ToUpper())
 			{
 				case "HELP":
 					{
