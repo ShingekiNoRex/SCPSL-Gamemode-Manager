@@ -10,6 +10,8 @@ using Smod2.EventSystem.Events;
 
 namespace GamemodeManager.SmodAPI
 {
+	using global::GamemodeManager.Templates;
+
 	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
 		private static bool FirstRoundComplete;
@@ -75,7 +77,8 @@ namespace GamemodeManager.SmodAPI
 						Smod2.ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
 
 					// debug
-					for (int i = 0; i < templates.Count; i++) this.plugin.Info($"DEBUG: templates[{i}]={templates[i]}");
+					for (int i = 0; i < templates.Count; i++)
+						this.plugin.Info($"DEBUG: templates[{i}]={templates[i]}");
 
 					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[ModeCount - 1])
 											&& GamemodeManager.Templates.Contains(templates[ModeCount - 1]))
@@ -123,10 +126,6 @@ namespace GamemodeManager.SmodAPI
 
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
-			// debug
-			// 	this.plugin.Info("DEBUG: gm_enable=" + this.plugin.GetConfigBool("gm_enable"));
-			// 	this.plugin.Info("DEBUG: GamemodeManager.GamemodeManager.EnabledRounds=" + GamemodeManager.GamemodeManager.EnabledRounds);
-			// end debug
 			if (!this.plugin.GetConfigBool("gm_enable") && GamemodeManager.EnabledRounds == 0)
 				GamemodeManager.DisableAll = true;
 			if (FirstRoundComplete) return;
@@ -135,6 +134,10 @@ namespace GamemodeManager.SmodAPI
 				.Replace("config_gameplay.txt", "sm_config_gamemode.txt");
 			if (File.Exists(path))
 			{
+				// new template system
+				TemplateHandler th = new TemplateHandler(this.plugin);
+				Template x = th.ReturnTemplate(path);
+
 				int line = -1;
 				List<Plugin> modeList = new List<Plugin>();
 				List<string> template = new List<string>();
