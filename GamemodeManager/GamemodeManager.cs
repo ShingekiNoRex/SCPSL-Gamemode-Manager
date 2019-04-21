@@ -85,7 +85,7 @@ namespace GamemodeManager
 				spawnqueue = ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340");
 			}
 
-			List<Team> classTeamQueue = spawnqueue.ToCharArray().Select(s => int.TryParse(s.ToString(), out int n) ? n : 4 ).Cast<Team>().ToList();
+			List<Team> classTeamQueue = spawnqueue.ToCharArray().Select(s => int.TryParse(s.ToString(), out int n) ? n : 4).Cast<Team>().ToList();
 			/*List<Team> classTeamQueue = new List<Team>();					// old code
 			for (int i = 0; i < spawnqueue.Length; i++)
 			{

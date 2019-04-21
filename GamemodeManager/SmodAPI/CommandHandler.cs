@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Smod2.Commands;
 using Smod2;
 
@@ -98,7 +97,7 @@ namespace GamemodeManager.SmodAPI
 												? "Default"
 												: GamemodeManager.ModeList[i].ToString()
 											)
-											+ " Name:" + GamemodeManager.ModeName[i] + " Queue:" + queue);
+											+ " PluginId:" + GamemodeManager.ModeName[i] + " Queue:" + queue);
 					}
 
 					return gamemodeList.ToArray();
@@ -174,7 +173,7 @@ namespace GamemodeManager.SmodAPI
 			return new[]
 					{
 						(GamemodeManager.CurrentMode.Equals(this._plugin) ? "Default" : GamemodeManager.CurrentMode.ToString()) 
-						+ " Name:"
+						+ " PluginId:"
 						+ GamemodeManager.CurrentName 
 						+ " Queue:"
 						+ (GamemodeManager.CurrentMode.Equals(this._plugin)

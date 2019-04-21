@@ -2,9 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using Smod2;
+
 using GamemodeManager.SmodAPI;
 
 namespace GamemodeManager.Templates
@@ -22,45 +21,56 @@ namespace GamemodeManager.Templates
 		/// <param name="plugin">Instance of the plugin</param>
 		internal TemplateHandler(PluginGamemodeManager plugin) => this._plugin = plugin;
 
-		public Template ReturnTemplate(string path)
+
+		/// <summary>
+		/// Get the templates in the given path
+		/// </summary>
+		/// <param name="path">The path to the file of the given file</param>
+		/// <returns><see cref="Templates"/></returns>
+		public Templates GetTemplates(string path)
 		{
 			string[] config = File.ReadAllLines(path);
 			List<string> sectionBody = new List<string>();
+			Templates collection = new Templates();
+			List<string> pluginIds = new List<string>();
+			List<Template> templates = new List<Template>();
 
-			int index = 0;
+			int templateCount = 0;
 			foreach (string line in config)
 			{
 				if (line.StartsWith("[") && line.EndsWith("]"))
 				{
+					if (!pluginIds.Any())
+					{
+						pluginIds.Add(line.Replace("[", string.Empty).Replace("]", string.Empty));
+						continue;
+					}
+
+					IEnumerable<Tuple<string, string>> handled = this.HandleSection(sectionBody);
+					Template template = new Template
+						{
+							PluginId = pluginIds[templateCount],
+							RawValues = handled.ToArray()
+						};
+					templates.Add(template);
 					sectionBody.Clear();
-					string pluginId = line.Replace("[", string.Empty).Replace("]", string.Empty);
-					Plugin gamemode = this._plugin.PluginManager.GetEnabledPlugin(pluginId);
-
-					if (pluginId.ToUpper().Equals("DEFAULT"))
-					{
-						gamemode = this._plugin;
-					}
-					else if (gamemode == null)
-					{
-						gamemode = this._plugin;
-						this._plugin.Warn("Can't find gamemode " + line);
-					}
-
-					index++;
+					templateCount++;
 				}
 				else 
 					sectionBody.Add(line);
-
-
 			}
 
-
-
-			Template template = new Template();
-
-
-
-			return template;
+			using (List<string>.Enumerator idsEnumerator = pluginIds.GetEnumerator())
+			{
+				using (List<Template>.Enumerator templatesEnumerator = templates.GetEnumerator())
+				{
+					while (idsEnumerator.MoveNext() && templatesEnumerator.MoveNext())
+					{
+						collection.Add(idsEnumerator.Current ?? string.Empty, templatesEnumerator.Current);
+					}
+				}
+			}
+			return collection;
 		}
 
 		/// <summary>
@@ -73,18 +83,5 @@ namespace GamemodeManager.Templates
 				.Select(line => new { line, key = Regex.Split(line, ":")[0].Trim() })
 				.Select(t => new { t, value = Regex.Split(t.line, ":")[1].Trim() })
 				.Select(t => new Tuple<string, string>(t.t.key, t.value));
-
-		/// <summary>
-		/// Return a tuple based off the inputted line
-		/// </summary>
-		/// <param name="line">Config line input</param>
-		/// <returns>KeyValue pair</returns>
-		public static Tuple<string, string> GetKeyPair(string line)
-		{
-			string[] split = Regex.Split(line, ": ");
-			return split.Length != 2
-					   ? new Tuple<string, string>(line, "invalid")
-					   : new Tuple<string, string>(split[0], split[1]);
-		}
 	}
 }
