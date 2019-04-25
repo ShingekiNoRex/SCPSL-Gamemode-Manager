@@ -76,15 +76,20 @@ namespace GamemodeManager.SmodAPI
 				else if (GamemodeManager.ModeList.Count > 0)
 				{
 					List<string> templates = new List<string>(
-						Smod2.ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
+						ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
 
 					// debug
 					for (int i = 0; i < templates.Count; i++)
 						this._plugin.Info($"DEBUG: templates[{i}]={templates[i]}");
 
+					this._plugin.Info($"DEBUG: ModeCount-1={ModeCount - 1}");
+					
 					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[ModeCount - 1])
 											&& GamemodeManager.Templates.Contains(templates[ModeCount - 1]))
 					{
+						
+						this._plugin.Info("DEBUG: entered [true]");
+						
 						int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[ModeCount - 1]));
 						GamemodeManager.CurrentMode = GamemodeManager.ModeList[queue];
 						GamemodeManager.CurrentName = GamemodeManager.ModeName[queue];
@@ -101,6 +106,7 @@ namespace GamemodeManager.SmodAPI
 					}
 					else
 					{
+						this._plugin.Info("DEBUG: entered [false]");
 						GamemodeManager.CurrentMode = GamemodeManager.ModeList[ModeCount];
 						GamemodeManager.CurrentName = GamemodeManager.ModeName[ModeCount];
 						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[ModeCount];
@@ -112,7 +118,7 @@ namespace GamemodeManager.SmodAPI
 								   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
 							+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
 
-						if (ModeCount >= GamemodeManager.ModeList.Count) ModeCount = 0;
+						if (ModeCount >= GamemodeManager.ModeList.Count || ModeCount >= templates.Count) ModeCount = 0;
 					}
 				}
 
@@ -150,7 +156,11 @@ namespace GamemodeManager.SmodAPI
 				{
 					Plugin gamemode = this._plugin.PluginManager.GetEnabledPlugin(t.Key);
 					if (t.Key.ToUpper().Equals("DEFAULT"))
+					{
+						this._plugin.Info("DEBUG: adding plugin " + gamemode.Details.name +
+						                  " to GamemodeManager.GamemodeManager.ModeList" + Environment.NewLine);
 						gamemode = this._plugin;
+					}
 					else if (gamemode == null)
 					{
 						gamemode = this._plugin;
