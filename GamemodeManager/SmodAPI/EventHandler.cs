@@ -16,9 +16,9 @@ namespace GamemodeManager.SmodAPI
 
 	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
-		private static bool FirstRoundComplete;
+		private static bool _firstRoundComplete;
 
-		private static int ModeCount;
+		private static int _modeCount;
 
 		private readonly PluginGamemodeManager _plugin;
 
@@ -82,35 +82,35 @@ namespace GamemodeManager.SmodAPI
 					for (int i = 0; i < templates.Count; i++)
 						this._plugin.Info($"DEBUG: templates[{i}]={templates[i]}");
 
-					this._plugin.Info($"DEBUG: ModeCount-1={ModeCount - 1}");
+					this._plugin.Info($"DEBUG: ModeCount-1={_modeCount - 1}");
 					
-					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[ModeCount - 1])
-											&& GamemodeManager.Templates.Contains(templates[ModeCount - 1]))
+					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[_modeCount - 1])
+											&& GamemodeManager.Templates.Contains(templates[_modeCount - 1]))
 					{
 						
 						this._plugin.Info("DEBUG: entered [true]");
 						
-						int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[ModeCount - 1]));
+						int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[_modeCount - 1]));
 						GamemodeManager.CurrentMode = GamemodeManager.ModeList[queue];
 						GamemodeManager.CurrentName = GamemodeManager.ModeName[queue];
 						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[queue];
 						GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[queue];
 						this._plugin.Info(
-							"Changing mode to [" + templates[ModeCount - 1] + "] ["
+							"Changing mode to [" + templates[_modeCount - 1] + "] ["
 							+ (GamemodeManager.CurrentMode.Equals(this._plugin)
 								   ? "Default"
 								   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
 							+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
-						ModeCount++;
-						if (ModeCount >= templates.Count) ModeCount = 0;
+						_modeCount++;
+						if (_modeCount >= templates.Count) _modeCount = 0;
 					}
 					else
 					{
 						this._plugin.Info("DEBUG: entered [false]");
-						GamemodeManager.CurrentMode = GamemodeManager.ModeList[ModeCount];
-						GamemodeManager.CurrentName = GamemodeManager.ModeName[ModeCount];
-						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[ModeCount];
-						GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[ModeCount++];
+						GamemodeManager.CurrentMode = GamemodeManager.ModeList[_modeCount];
+						GamemodeManager.CurrentName = GamemodeManager.ModeName[_modeCount];
+						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[_modeCount];
+						GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[_modeCount++];
 						this._plugin.Info(
 							"Changing mode to ["
 							+ (GamemodeManager.CurrentMode.Equals(this._plugin)
@@ -118,7 +118,7 @@ namespace GamemodeManager.SmodAPI
 								   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
 							+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
 
-						if (ModeCount >= GamemodeManager.ModeList.Count || ModeCount >= templates.Count) ModeCount = 0;
+						if (_modeCount >= GamemodeManager.ModeList.Count || _modeCount >= templates.Count) _modeCount = 0;
 					}
 				}
 
@@ -136,7 +136,7 @@ namespace GamemodeManager.SmodAPI
 		{
 			if (!this._plugin.GetConfigBool("gm_enable") && GamemodeManager.EnabledRounds == 0)
 				GamemodeManager.DisableAll = true;
-			if (FirstRoundComplete) return;
+			if (_firstRoundComplete) return;
 
 			string path = ConfigManager.Manager.Config.GetConfigPath()
 				.Replace("config_gameplay.txt", "sm_config_gamemode.txt");
@@ -190,8 +190,8 @@ namespace GamemodeManager.SmodAPI
 			GamemodeManager.CurrentName = GamemodeManager.ModeName[queue2];
 			GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[queue2];
 			GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[queue2];
-			ModeCount++;
-			FirstRoundComplete = true;
+			_modeCount++;
+			_firstRoundComplete = true;
 		}
 	}
 }
