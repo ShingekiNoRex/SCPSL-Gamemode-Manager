@@ -32,6 +32,7 @@ namespace GamemodeManager.SmodAPI
 			this.AddConfig(new ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
 			this.AddConfig(new ConfigSetting("gm_round_sequence", new [] { string.Empty }, true, string.Empty)); // list
 			this.AddCommand("gamemode", new CommandHandler(this));
+			this.AddCommand("gmm", new CommandHandler(this));
 			this.AddTranslation(new LangSetting("GM_CURRENT_MODE", "Current Mode"));
 			this.AddTranslation(new LangSetting("GM_DESCRIPTION", "Description"));
 		}
