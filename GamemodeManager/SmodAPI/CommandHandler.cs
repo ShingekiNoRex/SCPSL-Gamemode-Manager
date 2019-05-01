@@ -167,6 +167,12 @@ namespace GamemodeManager.SmodAPI
 					return new string[] {"Next mode will be " + nextMode.ToString()};
 
 				}
+				
+				case "VERSION":
+				case "V":
+				{
+					return new string[] { "Current GMM version: " + this._plugin.Details.version };
+				}
 
 				default:
 				{
