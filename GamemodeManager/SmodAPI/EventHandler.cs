@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
+using GamemodeManager.Templates;
 using Smod2;
 using Smod2.API;
 using Smod2.EventHandlers;
@@ -10,16 +11,10 @@ using Smod2.EventSystem.Events;
 
 namespace GamemodeManager.SmodAPI
 {
-	using System.Linq;
-
-	using global::GamemodeManager.Templates;
-
 	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
 		private static bool _firstRoundComplete;
-
 		private static int _modeCount;
-
 		private readonly PluginGamemodeManager _plugin;
 
 		public SmodEventHandler(PluginGamemodeManager plugin)
@@ -32,7 +27,8 @@ namespace GamemodeManager.SmodAPI
 			if (GamemodeManager.ModeList.Count > 0 && !GamemodeManager.DisableAll)
 			{
 				string result = string.Empty;
-				foreach (Team team in ev.Teams) result = result + (int)team;
+				foreach (Team team in ev.Teams)
+					result += (int)team;
 				ev.Teams = GamemodeManager.CurrentQueue;
 			}
 		}
@@ -121,7 +117,6 @@ namespace GamemodeManager.SmodAPI
 						if (_modeCount >= GamemodeManager.ModeList.Count || _modeCount >= templates.Count) _modeCount = 0;
 					}
 				}
-
 				GamemodeManager.EnabledRounds--;
 			}
 		}
@@ -144,7 +139,7 @@ namespace GamemodeManager.SmodAPI
 			{
 				// new template system
 				TemplateHandler th = new TemplateHandler(this._plugin);
-				Templates ts = th.GetTemplates(path);
+				Templates.Templates ts = th.GetTemplates(path);
 
 				GamemodeManager.ModeList.Clear();
 				GamemodeManager.Templates.Clear();
