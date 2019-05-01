@@ -79,10 +79,13 @@ namespace GamemodeManager.SmodAPI
 
 			switch (input.ToUpper())
 			{
+				case "-H":
 				case "HELP":
-					{
-						return args.Length == 1 ? HelpMessage(args[0]) : HelpMessage();
-					}
+				{
+					return args.Length == 1 ? HelpMessage(args[0]) : HelpMessage();
+				}
+				
+				case "-L":
 				case "LIST":
 				{
 					List<string> gamemodeList = new List<string> {"Gamemodes List"};
@@ -102,6 +105,8 @@ namespace GamemodeManager.SmodAPI
 
 					return gamemodeList.ToArray();
 				}
+				
+				case "-E":
 				case "ENABLE":
 				{
 					GamemodeManager.DisableAll = false;
@@ -126,6 +131,8 @@ namespace GamemodeManager.SmodAPI
 						}
 					}
 				}
+				
+				case "-D":
 				case "DISABLE":
 				{
 					GamemodeManager.DisableAll = true;
@@ -136,6 +143,8 @@ namespace GamemodeManager.SmodAPI
 						"NOTE: This will be overriden by the config option on each round start"
 					};
 				}
+				
+				case "-S":
 				case "SETNEXTMODE":
 				{
 					if (args.Length < 2)
@@ -168,15 +177,15 @@ namespace GamemodeManager.SmodAPI
 
 				}
 				
+				case "-V":
 				case "VERSION":
-				case "V":
 				{
 					return new string[] { "Current GMM version: " + this._plugin.Details.version };
 				}
 
 				default:
 				{
-			return new[]
+					return new[]
 					{
 						(GamemodeManager.CurrentMode.Equals(this._plugin) ? "Default" : GamemodeManager.CurrentMode.ToString()) 
 						+ " PluginId:"
