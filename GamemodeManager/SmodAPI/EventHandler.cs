@@ -130,7 +130,11 @@ namespace GamemodeManager.SmodAPI
 		public void OnWaitingForPlayers(WaitingForPlayersEvent ev)
 		{
 			if (!this._plugin.GetConfigBool("gm_enable") && GamemodeManager.EnabledRounds == 0)
+			{
 				GamemodeManager.DisableAll = true;
+				return;
+			}
+
 			if (_firstRoundComplete) return;
 
 			string path = ConfigManager.Manager.Config.GetConfigPath()
