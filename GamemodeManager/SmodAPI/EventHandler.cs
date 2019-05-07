@@ -26,9 +26,6 @@ namespace GamemodeManager.SmodAPI
 		{
 			if (GamemodeManager.ModeList.Count > 0 && !GamemodeManager.DisableAll)
 			{
-				string result = string.Empty;
-				foreach (Team team in ev.Teams)
-					result += (int)team;
 				ev.Teams = GamemodeManager.CurrentQueue;
 			}
 		}
@@ -73,19 +70,10 @@ namespace GamemodeManager.SmodAPI
 				{
 					List<string> templates = new List<string>(
 						ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
-
-					// debug
-					for (int i = 0; i < templates.Count; i++)
-						this._plugin.Info($"DEBUG: templates[{i}]={templates[i]}");
-
-					this._plugin.Info($"DEBUG: ModeCount-1={_modeCount - 1}");
 					
 					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[_modeCount - 1])
 											&& GamemodeManager.Templates.Contains(templates[_modeCount - 1]))
-					{
-						
-						this._plugin.Info("DEBUG: entered [true]");
-						
+					{						
 						int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[_modeCount - 1]));
 						GamemodeManager.CurrentMode = GamemodeManager.ModeList[queue];
 						GamemodeManager.CurrentName = GamemodeManager.ModeName[queue];
@@ -102,7 +90,6 @@ namespace GamemodeManager.SmodAPI
 					}
 					else
 					{
-						this._plugin.Info("DEBUG: entered [false]");
 						GamemodeManager.CurrentMode = GamemodeManager.ModeList[_modeCount];
 						GamemodeManager.CurrentName = GamemodeManager.ModeName[_modeCount];
 						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[_modeCount];
