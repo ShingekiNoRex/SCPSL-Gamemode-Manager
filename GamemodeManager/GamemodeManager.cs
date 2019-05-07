@@ -168,7 +168,7 @@ namespace GamemodeManager
 			string result = "";
 			foreach (Team team in queue)
 			{
-				result = result + (int)team;
+				result += (int)team;
 			}
 
 			return result;

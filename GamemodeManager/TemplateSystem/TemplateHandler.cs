@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 using GamemodeManager.SmodAPI;
 
-namespace GamemodeManager.Templates
+namespace GamemodeManager.TemplateSystem
 {
 	/// <summary>
 	/// Handle a template
@@ -46,12 +46,14 @@ namespace GamemodeManager.Templates
 						continue;
 					}
 
-					IEnumerable<Tuple<string, string>> handled = this.HandleSection(sectionBody);
 					Template template = new Template
-						{
-							PluginId = pluginIds[templateCount],
-							RawValues = handled.ToArray()
-						};
+					{
+						PluginId = pluginIds[templateCount],
+						Lines = config
+					};
+
+					this.AssignNodes(template, sectionBody.ToArray());
+
 					templates.Add(template);
 					sectionBody.Clear();
 					templateCount++;
@@ -73,15 +75,62 @@ namespace GamemodeManager.Templates
 			return collection;
 		}
 
-		/// <summary>
-		/// Return a <see cref="IEnumerable{T}"/> of the section under the header
-		/// </summary>
-		/// <param name="lines">The lines beneath the header</param>
-		/// <returns><see cref="IEnumerable{T}"/></returns>
-		public IEnumerable<Tuple<string, string>> HandleSection(List<string> lines) =>
-			lines.Where(line => line.TrimStart().StartsWith("-") && line.Contains(':'))
-				.Select(line => new { line, key = Regex.Split(line, ":")[0].Trim() })
-				.Select(t => new { t, value = Regex.Split(t.line, ":")[1].Trim() })
-				.Select(t => new Tuple<string, string>(t.t.key, t.value));
+		private void AssignNodes(Template template, string[] lines)
+		{
+			int nest = 0;
+			foreach (string line in lines)
+			{
+				if (!line.StartsWith("-"))
+					continue;
+
+				Node n = new Node(line.Split(':')[0]);
+				if (line.Trim().EndsWith("{") && !line.Trim().EndsWith(@"\{"))
+					nest++;
+
+				if (nest == 0)
+				{
+					n.IsNested = false;
+					n.Value = line.Split(':')[1];
+					return;
+				}
+
+				while (nest > 0)
+				{
+					n.IsNested = true;
+					bool reachedCurrent = false;
+
+					using (IEnumerator<string> e = ((IEnumerable<string>)lines).GetEnumerator())
+					{
+						while (e.MoveNext())
+						{
+							if (e.Current != line && !reachedCurrent)
+								continue;
+
+							if (e.Current == line)
+							{
+								reachedCurrent = true;
+								continue;
+							}
+
+							if (reachedCurrent)
+							{
+								if (line.Contains(":"))
+									n.Values.Add(new Tuple<string, string>(e.Current.Split(':')[0], e.Current.Split(':')[1]));
+								else
+									n.Values.Add(new Tuple<string, string>(e.Current, null));
+
+								if (line.Trim().EndsWith("}") && !line.Trim().EndsWith(@"\}"))
+								{
+									nest--;
+									break;
+								}
+							}
+						}
+					}
+				}
+
+				template.Nodes.Add(n); 
+			}
+		}
 	}
 }

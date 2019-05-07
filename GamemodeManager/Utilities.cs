@@ -35,6 +35,5 @@
 		/// <returns>The new array</returns>
 		public static T[] Range<T>(this T[] input, int amount) =>
 			Range(input, 0, amount);
-		
 	}
 }
