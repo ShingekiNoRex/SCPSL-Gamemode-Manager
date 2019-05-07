@@ -14,9 +14,7 @@ namespace GamemodeManager.SmodAPI
 	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
 	{
 		private static bool _firstRoundComplete;
-
 		private static int _modeCount;
-
 		private readonly PluginGamemodeManager _plugin;
 
 		public SmodEventHandler(PluginGamemodeManager plugin)
@@ -26,12 +24,8 @@ namespace GamemodeManager.SmodAPI
 
 		public void OnDecideTeamRespawnQueue(DecideRespawnQueueEvent ev)
 		{
-			if (GamemodeManager.ModeList.Count > 0 && !GamemodeManager.DisableAll)
-			{
-				string result = string.Empty;
-				foreach (Team team in ev.Teams) result = result + (int)team;
-				ev.Teams = GamemodeManager.CurrentQueue;
-			}
+			if (GamemodeManager.ModeList.Count <= 0 || GamemodeManager.DisableAll) return;
+			ev.Teams = GamemodeManager.CurrentQueue;
 		}
 
 		public void OnPlayerJoin(PlayerJoinEvent ev)
