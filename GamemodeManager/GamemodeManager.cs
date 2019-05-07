@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace GamemodeManager
 {
-	public abstract class GamemodeManager
+	public static class GamemodeManager
 	{
 		/// <summary>
 		/// The gamemode currently in use
