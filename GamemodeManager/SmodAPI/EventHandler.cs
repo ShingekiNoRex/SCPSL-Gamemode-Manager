@@ -11,9 +11,10 @@ using Smod2.EventSystem.Events;
 
 namespace GamemodeManager.SmodAPI
 {
-	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin
+	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin, IEventHandlerRoundStart
 	{
 		private static bool _firstRoundComplete;
+		private static bool _runOnce = false;
 		private static int _modeCount;
 		private readonly PluginGamemodeManager _plugin;
 
@@ -178,6 +179,16 @@ namespace GamemodeManager.SmodAPI
 			GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[queue2];
 			_modeCount++;
 			_firstRoundComplete = true;
+		}
+
+		public void OnRoundStart(RoundStartEvent ev)
+		{
+			if (_runOnce)
+				return;
+			
+			RoundRestartEvent e = new RoundRestartEvent(ev.Server);
+			this.OnRoundRestart(e);
+			_runOnce = true;
 		}
 	}
 }
