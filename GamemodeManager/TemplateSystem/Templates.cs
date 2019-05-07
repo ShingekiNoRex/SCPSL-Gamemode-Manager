@@ -2,11 +2,10 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
-namespace GamemodeManager.Templates
+namespace GamemodeManager.TemplateSystem
 {
-	using System.Reflection;
-
 	/// <inheritdoc />
 	/// <summary>
 	/// A collection of each template, indexed by PluginID
@@ -42,7 +41,7 @@ namespace GamemodeManager.Templates
 
 		/// <inheritdoc />
 		/// <summary>
-		/// The collection of keys in <see cref="T:GamemodeManager.Templates.Templates" />
+		/// The collection of keys in <see cref="T:GamemodeManager.TemplateSystem.Templates" />
 		/// </summary>
 		public ICollection<string> Keys { get; private set; }
 

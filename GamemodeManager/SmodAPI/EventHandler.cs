@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using GamemodeManager.Templates;
+using GamemodeManager.TemplateSystem;
 using Smod2;
 using Smod2.API;
 using Smod2.EventHandlers;
@@ -143,7 +143,7 @@ namespace GamemodeManager.SmodAPI
 			{
 				// new template system
 				TemplateHandler th = new TemplateHandler(this._plugin);
-				Templates.Templates ts = th.GetTemplates(path);
+				Templates ts = th.GetTemplates(path);
 
 				GamemodeManager.ModeList.Clear();
 				GamemodeManager.Templates.Clear();
