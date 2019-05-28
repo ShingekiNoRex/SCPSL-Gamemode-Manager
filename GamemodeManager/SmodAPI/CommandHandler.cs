@@ -182,7 +182,8 @@ namespace GamemodeManager.SmodAPI
 				{
 					return new string[] { "Current GMM version: " + this._plugin.Details.version };
 				}
-
+				
+				case " ":
 				default:
 				{
 					return new[]
