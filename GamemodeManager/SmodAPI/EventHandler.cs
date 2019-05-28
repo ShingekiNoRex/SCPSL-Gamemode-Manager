@@ -69,41 +69,58 @@ namespace GamemodeManager.SmodAPI
 				}
 				else if (GamemodeManager.ModeList.Count > 0)
 				{
+					Random random = new Random();
 					List<string> templates = new List<string>(
 						ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
-					
-					if (templates.Count > 0 && !string.IsNullOrEmpty(templates[_modeCount - 1])
-											&& GamemodeManager.Templates.Contains(templates[_modeCount - 1]))
-					{						
-						int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[_modeCount - 1]));
-						GamemodeManager.CurrentMode = GamemodeManager.ModeList[queue];
-						GamemodeManager.CurrentName = GamemodeManager.ModeName[queue];
-						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[queue];
-						GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[queue];
-						this._plugin.Info(
-							"Changing mode to [" + templates[_modeCount - 1] + "] ["
-							+ (GamemodeManager.CurrentMode.Equals(this._plugin)
-								   ? "Default"
-								   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
-							+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
-						_modeCount++;
-						if (_modeCount >= templates.Count) _modeCount = 0;
-					}
-					else
-					{
-						GamemodeManager.CurrentMode = GamemodeManager.ModeList[_modeCount];
-						GamemodeManager.CurrentName = GamemodeManager.ModeName[_modeCount];
-						GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[_modeCount];
-						GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[_modeCount++];
-						this._plugin.Info(
-							"Changing mode to ["
-							+ (GamemodeManager.CurrentMode.Equals(this._plugin)
-								   ? "Default"
-								   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
-							+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
 
-						if (_modeCount >= GamemodeManager.ModeList.Count || _modeCount >= templates.Count) _modeCount = 0;
-					}
+					int randomMode = random.Next(0, templates.Count - 1);
+				//	string value = string.IsNullOrEmpty(templates[randomMode]) ? "default" : templates[randomMode];
+				// this is a poor way of doing it that will be reworked soon
+					GamemodeManager.CurrentMode = GamemodeManager.ModeList[randomMode];
+					GamemodeManager.CurrentName = GamemodeManager.ModeName[randomMode];
+					GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[randomMode];
+					GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[randomMode];
+					this._plugin.Info(
+						"Changing mode to [" + templates[_modeCount - 1] + "] ["
+						+ (GamemodeManager.CurrentMode.Equals(this._plugin)
+							? "Default"
+							: GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
+						+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
+					_modeCount++;
+					if (_modeCount >= templates.Count) _modeCount = 0;
+
+					/*	if (templates.Count > 0 && !string.IsNullOrEmpty(templates[_modeCount - 1])
+												&& GamemodeManager.Templates.Contains(templates[_modeCount - 1]))
+						{						
+							int queue = GamemodeManager.Templates.FindIndex(x => x.Equals(templates[_modeCount - 1]));
+							GamemodeManager.CurrentMode = GamemodeManager.ModeList[queue];
+							GamemodeManager.CurrentName = GamemodeManager.ModeName[queue];
+							GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[queue];
+							GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[queue];
+							this._plugin.Info(
+								"Changing mode to [" + templates[_modeCount - 1] + "] ["
+								+ (GamemodeManager.CurrentMode.Equals(this._plugin)
+									   ? "Default"
+									   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
+								+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
+							_modeCount++;
+							if (_modeCount >= templates.Count) _modeCount = 0;
+						}
+						else
+						{
+							GamemodeManager.CurrentMode = GamemodeManager.ModeList[_modeCount];
+							GamemodeManager.CurrentName = GamemodeManager.ModeName[_modeCount];
+							GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[_modeCount];
+							GamemodeManager.CurrentDescription = GamemodeManager.Descriptions[_modeCount++];
+							this._plugin.Info(
+								"Changing mode to ["
+								+ (GamemodeManager.CurrentMode.Equals(this._plugin)
+									   ? "Default"
+									   : GamemodeManager.CurrentMode.ToString()) + "] (" + GamemodeManager.CurrentName
+								+ ") (" + GamemodeManager.QueueToString(GamemodeManager.CurrentQueue) + ")");
+	
+							if (_modeCount >= GamemodeManager.ModeList.Count || _modeCount >= templates.Count) _modeCount = 0;
+						} */
 				}
 				GamemodeManager.EnabledRounds--;
 			}
