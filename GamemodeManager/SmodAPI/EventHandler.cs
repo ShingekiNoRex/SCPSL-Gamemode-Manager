@@ -42,6 +42,11 @@ namespace GamemodeManager.SmodAPI
 
 		public void OnRoundRestart(RoundRestartEvent ev)
 		{
+			DecideGamemode();
+		}
+
+		private void DecideGamemode()
+		{
 			if (GamemodeManager.DisableAll && GamemodeManager.EnabledRounds == 0)
 			{
 				GamemodeManager.CurrentMode = null;
@@ -74,8 +79,8 @@ namespace GamemodeManager.SmodAPI
 						ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
 
 					int randomMode = random.Next(0, templates.Count - 1);
-				//	string value = string.IsNullOrEmpty(templates[randomMode]) ? "default" : templates[randomMode];
-				// this is a poor way of doing it that will be reworked soon
+					//	string value = string.IsNullOrEmpty(templates[randomMode]) ? "default" : templates[randomMode];
+					// this is a poor way of doing it that will be reworked soon
 					GamemodeManager.CurrentMode = GamemodeManager.ModeList[randomMode];
 					GamemodeManager.CurrentName = GamemodeManager.ModeName[randomMode];
 					GamemodeManager.CurrentQueue = GamemodeManager.SpawnQueue[randomMode];
@@ -203,8 +208,7 @@ namespace GamemodeManager.SmodAPI
 			if (_runOnce)
 				return;
 			
-			RoundRestartEvent e = new RoundRestartEvent(ev.Server);
-			this.OnRoundRestart(e);
+			this.DecideGamemode();
 			_runOnce = true;
 		}
 	}
