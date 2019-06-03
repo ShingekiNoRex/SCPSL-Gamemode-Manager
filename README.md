@@ -31,6 +31,9 @@ enable | -e | | Enable gamemodes
 disable | -d | | Disable all gamemodes
 version | -v | | Print the current version to the console
 
+**Example:**  
+`gmm -v` :: `Current GMM version is: 2.3`
+
 # API
 `void` RegisterMode(Plugin gamemode, string spawnqueue = "-1");
 If spawnqueue is "-1", the gamemode will run with default config(team_respawn_queue)
