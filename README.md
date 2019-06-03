@@ -7,17 +7,22 @@ Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify
 `gm_round_sequence: {15%template1|20%template2|template3}, template4`
 
 # Command
-**gamemode** - Show the current gamemode.
+**gamemode** | **gmm** - Show the current gamemode.
 
-**gamemode help** - Show the usage of gamemode command.
+## Subcommands
+**current** | **-c** - Show the current gamemode.
 
-**gamemode list** - Show the list of gamemodes.
+**help** | **-h** - Show the usage of gamemode command.
 
-**gamemode setnextmode { [template name] | [plugin id] [spawn queue] [name] }** - Set the mode of next round.
+**list** | **-l** - Show the list of gamemodes.
 
-**gamemode enable** - Enable gamemodes.
+**setnextmode { [template name] | [plugin id] [spawn queue] [name] }** | **-s { [template name] | [plugin id] [spawn queue] [name] }**- Set the mode of next round.
 
-**gamemode disable** - Disable all gamemodes.
+**enable** | **-e** - Enable gamemodes.
+
+**disable* | **-d** - Disable all gamemodes.
+
+**version** | **-v** - Print the current version to the console.
 
 # API
 `void` RegisterMode(Plugin gamemode, string spawnqueue = "-1");
