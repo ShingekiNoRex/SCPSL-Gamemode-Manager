@@ -6,23 +6,30 @@ Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify
 # Config
 `gm_round_sequence: {15%template1|20%template2|template3}, template4`
 
-# Command
-**gamemode** | **gmm** - Show the current gamemode.
+# Commands
+
+## Main Commands
+() Denotes optional argument.  
+<> Denotes required argument.  
+| Means either one or the other is needed.  
+& Means both are needed.  
+
+Command | Alias | Description
+--- | :---: | ---
+gamemode | gmm | When used without arguments, shows the current gamemode.
 
 ## Subcommands
-**current** | **-c** - Show the current gamemode.
+These are each called on top of a main command
 
-**help** | **-h** - Show the usage of gamemode command.
-
-**list** | **-l** - Show the list of gamemodes.
-
-**setnextmode { [template name] | [plugin id] [spawn queue] [name] }** | **-s { [template name] | [plugin id] [spawn queue] [name] }**- Set the mode of next round.
-
-**enable** | **-e** - Enable gamemodes.
-
-**disable** | **-d** - Disable all gamemodes.
-
-**version** | **-v** - Print the current version to the console.
+### GMM:
+Command | Alias | Arguments | Description
+--- | :---: | :---: | ---
+help | -h | (command) | Returns the usage info of the command.
+current | -c | | Shows the current gamemode (same as main command without arguments)
+setnextmode | -s | <template name \| plugin id \| spawn queue \| name> | Set the next gamemode
+enable | -e | | Enable gamemodes
+disable | -d | | Disable all gamemodes
+version | -v | | Print the current version to the console
 
 # API
 `void` RegisterMode(Plugin gamemode, string spawnqueue = "-1");
