@@ -9,10 +9,10 @@ Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify
 # Commands
 
 ## Main Commands
-() Denotes optional argument.  
-<> Denotes required argument.  
-| Means either one or the other is needed.  
-& Means both are needed.  
+`()` Denotes optional argument.  
+`<>` Denotes required argument.  
+`|` Means either one or the other is needed.  
+`&` Means both are needed.  
 
 Command | Alias | Description
 --- | :---: | ---
