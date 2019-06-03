@@ -20,7 +20,7 @@ Put sm_config_gamemode.txt in the same folder with config_gameplay.txt to modify
 
 **enable** | **-e** - Enable gamemodes.
 
-**disable* | **-d** - Disable all gamemodes.
+**disable** | **-d** - Disable all gamemodes.
 
 **version** | **-v** - Print the current version to the console.
 
