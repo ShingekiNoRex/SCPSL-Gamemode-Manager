@@ -7,63 +7,68 @@ namespace GamemodeManager
 {
 	public static class GamemodeManager
 	{
+		#region Properties
 		/// <summary>
 		/// The gamemode currently in use
 		/// </summary>
-		public static Plugin CurrentMode;
+		public static Plugin CurrentMode { get; set; }
 		/// <summary>
 		/// The next gamemode in the queue
 		/// </summary>
-		public static Plugin NextMode;
+		public static Plugin NextMode { get; set; }
 		/// <summary>
 		/// The current team respawn queue
 		/// </summary>
-		public static Team[] CurrentQueue;
+		public static Team[] CurrentQueue { get; set; }
 		/// <summary>
 		/// The next team respawn queue
 		/// </summary>
-		public static Team[] NextQueue;
+		public static Team[] NextQueue { get; set; }
 		/// <summary>
 		/// The name of the current gamemode
 		/// </summary>
-		public static string CurrentName;
+		public static string CurrentName { get; set; }
 		/// <summary>
 		/// The name of the next gamemode
 		/// </summary>
-		public static string NextName;
+		public static string NextName { get; set; }
 		/// <summary>
 		/// The description of the current gamemode
 		/// </summary>
-		public static string CurrentDescription;
-		/// <summary>
-		/// A list of all registered gamemodes
-		/// </summary>
-		public static List<Plugin> ModeList = new List<Plugin>();
-		/// <summary>
-		/// 
-		/// </summary>
-		public static List<Team[]> SpawnQueue = new List<Team[]>();
-		/// <summary>
-		/// 
-		/// </summary>
-		public static List<string> Templates = new List<string>();
-		/// <summary>
-		/// A list of the names of all registered gamemodes
-		/// </summary>
-		public static List<string> ModeName = new List<string>();
-		/// <summary>
-		/// 
-		/// </summary>
-		public static List<string> Descriptions = new List<string>();
+		public static string CurrentDescription { get; set; }
 		/// <summary>
 		/// Disable all gamemode actions
 		/// </summary>
-		public static bool DisableAll;
+		public static bool DisableAll { get; set; }
+		#endregion
+
+		#region Fields
+		/// <summary>
+		/// A list of all registered gamemodes
+		/// </summary>
+		private static List<Plugin> ModeList = new List<Plugin>();
+		/// <summary>
+		/// 
+		/// </summary>
+		internal static List<Team[]> SpawnQueue = new List<Team[]>();
+		/// <summary>
+		/// 
+		/// </summary>
+		internal static List<string> Templates = new List<string>();
+		/// <summary>
+		/// A list of the names of all registered gamemodes
+		/// </summary>
+		internal static List<string> ModeName = new List<string>();
+		/// <summary>
+		/// 
+		/// </summary>
+		internal static List<string> Descriptions = new List<string>();
 
 		/// <summary>
 		/// The amount of rounds gamemodes will be enabled for
 		/// </summary>
-		public static uint EnabledRounds = 0;
+		internal static uint EnabledRounds = 0;
+		#endregion
 
 		/// <summary>
 		/// Register a gamemode
@@ -131,9 +136,12 @@ namespace GamemodeManager
 			}
 		}
 
-		public static Plugin GetCurrentMode()
+		public static Plugin[] GetModes()
 		{
-			return CurrentMode;
+			Plugin[] modes = new Plugin[ModeList.Count];
+			for (int i = 0; i < ModeList.Count; i++)
+				modes[i] = ModeList[i];
+			return modes;
 		}
 
 		public static Team[] GetCurrentQueue()

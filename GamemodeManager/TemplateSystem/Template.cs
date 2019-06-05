@@ -34,8 +34,6 @@ namespace GamemodeManager.TemplateSystem
 
 		public List<Node> Nodes { get; set; }
 
-		
-
 		private void AssignProperties()
 		{
 			foreach (Node node in this.Nodes)
