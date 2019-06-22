@@ -46,7 +46,7 @@ namespace GamemodeManager
 		/// <summary>
 		/// A list of all registered gamemodes
 		/// </summary>
-		private static List<Plugin> ModeList = new List<Plugin>();
+		internal static List<Plugin> ModeList = new List<Plugin>();
 		/// <summary>
 		/// 
 		/// </summary>
@@ -90,18 +90,7 @@ namespace GamemodeManager
 				spawnqueue = ConfigManager.Manager.Config.GetStringValue("team_respawn_queue", "40143140314414041340");
 			}
 
-			List<Team> classTeamQueue = spawnqueue.ToCharArray().Select(s => int.TryParse(s.ToString(), out int n) ? n : 4).Cast<Team>().ToList();
-			/*List<Team> classTeamQueue = new List<Team>();					// old code
-			for (int i = 0; i < spawnqueue.Length; i++)
-			{
-				int item = 4;
-				if (!int.TryParse(spawnqueue[i].ToString(), out item))
-				{
-					item = 4;
-				}
-				classTeamQueue.Add((Team)item);
-			}*/
-			CurrentQueue = classTeamQueue.ToArray();
+			CurrentQueue = spawnqueue.ToCharArray().Select(s => int.TryParse(s.ToString(), out int n) ? n : 4).Cast<Team>().ToArray();
 			SpawnQueue.Add(CurrentQueue);
 		}
 
@@ -122,17 +111,7 @@ namespace GamemodeManager
 			}
 			else
 			{
-				List<Team> classTeamQueue = new List<Team>();
-				for (int i = 0; i < spawnqueue.Length; i++)
-				{
-					int item = 4;
-					if (!int.TryParse(spawnqueue[i].ToString(), out item))
-					{
-						item = 4;
-					}
-					classTeamQueue.Add((Team)item);
-				}
-				NextQueue = classTeamQueue.ToArray();
+				NextQueue = spawnqueue.ToCharArray().Select(s => int.TryParse(s.ToString(), out int n) ? n : 4).Cast<Team>().ToArray();
 			}
 		}
 
