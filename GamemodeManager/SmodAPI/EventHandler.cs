@@ -149,11 +149,18 @@ namespace GamemodeManager.SmodAPI
 
 			string path = ConfigManager.Manager.Config.GetConfigPath()
 				.Replace("config_gameplay.txt", "sm_config_gamemode.txt");
+			if (path.IsEmptyFile())
+			{
+				this._plugin.Warn($"{path} config file empty");
+				File.Delete(path);
+			}
+
 			if (File.Exists(path))
 			{
 				// new template system
 				TemplateHandler th = new TemplateHandler(this._plugin);
 				Templates ts = th.GetTemplates(path);
+				this._plugin.Debug(ts.Count.ToString());
 
 				GamemodeManager.ModeList.Clear();
 				GamemodeManager.Templates.Clear();
@@ -187,7 +194,7 @@ namespace GamemodeManager.SmodAPI
 
 				// end debug
 			}
-
+			/* debug */ this._plugin.Debug("hello yes am here");
 			int queue2 = 0;
 			List<string> templates =
 				new List<string>(ConfigManager.Manager.Config.GetListValue("gm_round_sequence", true));
