@@ -1,7 +1,7 @@
-﻿using Smod2;
-using Smod2.API;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using Smod2;
+using Smod2.API;
 
 namespace GamemodeManager
 {
@@ -70,6 +70,7 @@ namespace GamemodeManager
 		internal static uint EnabledRounds = 0;
 		#endregion
 
+		#region Methods
 		/// <summary>
 		/// Register a gamemode
 		/// </summary>
@@ -83,7 +84,7 @@ namespace GamemodeManager
 			ModeList.Add(gamemode);
 			ModeName.Add(CurrentName);
 			Descriptions.Add(CurrentDescription);
-			gamemode.Info("[GamemodeManager] " + gamemode.ToString() + " has been registered.");
+			gamemode.Info("[GamemodeManager] " + gamemode + " has been registered.");
 
 			if (spawnqueue.Equals("-1"))
 			{
@@ -123,16 +124,6 @@ namespace GamemodeManager
 			return modes;
 		}
 
-		public static Team[] GetCurrentQueue()
-		{
-			return CurrentQueue;
-		}
-
-		public static string GetCurrentName()
-		{
-			return CurrentName;
-		}
-
 		/*
 		public static Team[] GetModeQueue(Plugin gamemode)
 		{
@@ -160,5 +151,6 @@ namespace GamemodeManager
 
 			return result;
 		}
+		#endregion
 	}
 }

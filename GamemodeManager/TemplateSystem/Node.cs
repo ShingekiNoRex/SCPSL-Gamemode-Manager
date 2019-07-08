@@ -26,11 +26,8 @@ namespace GamemodeManager.TemplateSystem
 
 		public override bool Equals(object obj)
 		{
-			return obj is Node node &&
-				   this.Key == node.Key &&
-				   this.Value == node.Value &&
-				   EqualityComparer<List<Tuple<string, string>>>.Default.Equals(this.Values, node.Values) &&
-				   this.IsNested == node.IsNested;
+			return obj is Node node && this.Key == node.Key && this.Value == node.Value &&
+				   EqualityComparer<List<Tuple<string, string>>>.Default.Equals(this.Values, node.Values) && this.IsNested == node.IsNested;
 		}
 
 		public override int GetHashCode()

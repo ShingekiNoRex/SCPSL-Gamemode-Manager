@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text.RegularExpressions;
-
 using GamemodeManager.SmodAPI;
 
 namespace GamemodeManager.TemplateSystem
@@ -52,7 +50,7 @@ namespace GamemodeManager.TemplateSystem
 						Lines = config
 					};
 
-					this.AssignNodes(template, sectionBody.ToArray());
+					AssignNodes(template, sectionBody.ToArray());
 
 					templates.Add(template);
 					sectionBody.Clear();

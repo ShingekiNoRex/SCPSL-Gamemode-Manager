@@ -14,7 +14,7 @@ namespace GamemodeManager.SmodAPI
 	internal class SmodEventHandler : IEventHandlerWaitingForPlayers, IEventHandlerRoundRestart, IEventHandlerDecideTeamRespawnQueue, IEventHandlerSetServerName, IEventHandlerPlayerJoin, IEventHandlerRoundStart
 	{
 		private static bool _firstRoundComplete;
-		private static bool _runOnce = false;
+		private static bool _runOnce;
 		private static int _modeCount;
 		private readonly PluginGamemodeManager _plugin;
 
@@ -160,7 +160,7 @@ namespace GamemodeManager.SmodAPI
 				GamemodeManager.ModeName.Clear();
 				GamemodeManager.SpawnQueue.Clear();
 				GamemodeManager.Descriptions.Clear();
-
+				
 				foreach (KeyValuePair<string, Template> t in ts)
 				{
 					Plugin gamemode = this._plugin.PluginManager.GetEnabledPlugin(t.Key);
@@ -208,7 +208,7 @@ namespace GamemodeManager.SmodAPI
 			if (_runOnce)
 				return;
 			
-			this.DecideGamemode();
+			DecideGamemode();
 			_runOnce = true;
 		}
 	}

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
-using Smod2.Commands;
 using Smod2;
+using Smod2.Commands;
 
 namespace GamemodeManager.SmodAPI
 {
@@ -116,20 +116,14 @@ namespace GamemodeManager.SmodAPI
 						"Gamemodes will be enabled in the following rounds.",
 						"NOTE: This will be overriden by the config option on each round start"
 					};
-					else
+					if (int.TryParse(args[1], out int enabledRounds))
 					{
-						if (int.TryParse(args[1], out int enabledRounds))
-						{
-							GamemodeManager.EnabledRounds = (uint)enabledRounds;
-							return new[] { $"Gamemodes will be enabled for the following rounds {enabledRounds}" };
-						}
-
-						else
-						{
-							GamemodeManager.EnabledRounds = 1;
-							return new[] { $"{args[1]} is not an integer", "Gamemodes will be enabled in this round" };
-						}
+						GamemodeManager.EnabledRounds = (uint)enabledRounds;
+						return new[] { $"Gamemodes will be enabled for the following rounds {enabledRounds}" };
 					}
+
+					GamemodeManager.EnabledRounds = 1;
+					return new[] { $"{args[1]} is not an integer", "Gamemodes will be enabled in this round" };
 				}
 				
 				case "-D":
@@ -152,9 +146,8 @@ namespace GamemodeManager.SmodAPI
 
 					if (args[1].ToUpper().Equals("DEFAULT"))
 					{
-						GamemodeManager.SetNextMode(this._plugin,
-							_plugin.GetConfigString("team_respawn_queue"), "Default");
-						return new string[] {"Next mode will be Default"};
+						GamemodeManager.SetNextMode(this._plugin, this._plugin.GetConfigString("team_respawn_queue"), "Default");
+						return new[] {"Next mode will be Default"};
 					}
 
 					if (!args[1].Contains(".")) return HelpMessage("setnextmode");
@@ -164,8 +157,8 @@ namespace GamemodeManager.SmodAPI
 					    return new[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " is null"};
 					if (!nextMode.Details.id.Contains("gamemode"))
 					    return new[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " does not contain 'gamemode'"};
-					if (nextMode.Equals(_plugin))
-						return new string[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " equals DEFAULT"};
+					if (nextMode.Equals(this._plugin))
+						return new[] {"Can't find gamemode: " + args[1], "REASON: " + nameof(nextMode) + " equals DEFAULT"};
 					string queue = "-1";
 					if (args.Length >= 3)
 						queue = args[2];
@@ -173,14 +166,14 @@ namespace GamemodeManager.SmodAPI
 					if (args.Length >= 4)
 						name = args[3];
 					GamemodeManager.SetNextMode(nextMode, queue, name);
-					return new string[] {"Next mode will be " + nextMode.ToString()};
+					return new[] {"Next mode will be " + nextMode};
 
 				}
 				
 				case "-V":
 				case "VERSION":
 				{
-					return new string[] { "Current GMM version: " + this._plugin.Details.version };
+					return new[] { "Current GMM version: " + this._plugin.Details.version };
 				}
 
 				case "-C":

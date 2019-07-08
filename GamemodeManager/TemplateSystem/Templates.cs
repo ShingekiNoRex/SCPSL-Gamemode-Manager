@@ -15,7 +15,7 @@ namespace GamemodeManager.TemplateSystem
 		/// <summary>
 		/// Backing field for the <see cref="Count"/> property
 		/// </summary>
-		private int count;
+		private int _count;
 
 		/// <summary>
 		/// Initialize a new empty instance of <see cref="Templates"/>
@@ -69,8 +69,8 @@ namespace GamemodeManager.TemplateSystem
 		/// </summary>
 		public int Count
 		{
-			get => this.count = this.Keys.Count;
-			set => this.count = value;
+			get => this._count = this.Keys.Count;
+			set => this._count = value;
 		}
 
 		/// <inheritdoc />
@@ -81,8 +81,18 @@ namespace GamemodeManager.TemplateSystem
 		/// <returns></returns>
 		public Template this[string key]
 		{
-			get => throw new NotImplementedException();
-			set => throw new NotImplementedException();
+			get
+			{
+				if (TryGetValue(key, out Template getValue))
+					return getValue;
+				throw new ArgumentOutOfRangeException(nameof(key));
+			}
+			set
+			{
+				if (TryGetValue(key, out Template setValue))
+					setValue = value;
+				throw new ArgumentOutOfRangeException(nameof(key));
+			}
 		}
 
 		/// <inheritdoc />
@@ -91,8 +101,7 @@ namespace GamemodeManager.TemplateSystem
 		/// </summary>
 		/// <param name="key">The key to be checked</param>
 		/// <returns>The status of success</returns>
-		public bool ContainsKey(string key) => 
-			this.Keys.Contains(key);
+		public bool ContainsKey(string key) => this.Keys.Contains(key);
 
 		/// <inheritdoc />
 		/// <summary>
@@ -113,7 +122,7 @@ namespace GamemodeManager.TemplateSystem
 		/// <param name="item">The key value pair to remove</param>
 		/// <returns>Whether the operation is successful</returns>
 		public bool Remove(KeyValuePair<string, Template> item) =>
-			this.Contains(item) && this.Keys.Remove(item.Key) && this.Values.Remove(item.Value);
+			Contains(item) && this.Keys.Remove(item.Key) && this.Values.Remove(item.Value);
 
 		/// <inheritdoc />
 		/// <summary>
@@ -122,7 +131,7 @@ namespace GamemodeManager.TemplateSystem
 		/// <param name="key">The key at which to perform the remove action</param>
 		/// <returns>Whether the operation is successful</returns>
 		public bool Remove(string key) =>
-			this.TryGetValue(key, out Template v) && this.Remove(new KeyValuePair<string, Template>(key, v));
+			TryGetValue(key, out Template v) && Remove(new KeyValuePair<string, Template>(key, v));
 
 		/// <inheritdoc />
 		/// <summary>
@@ -133,7 +142,7 @@ namespace GamemodeManager.TemplateSystem
 		/// <returns>Whether the operation is successful</returns>
 		public bool TryGetValue(string key, out Template value)
 		{
-			if (!this.ContainsKey(key))
+			if (!ContainsKey(key))
 			{
 				value = null;
 				return false;
@@ -156,7 +165,7 @@ namespace GamemodeManager.TemplateSystem
 
 		/// <inheritdoc />
 		/// <summary>
-		/// Empty the collection of all keys and values
+		/// IsEmptyFile the collection of all keys and values
 		/// </summary>
 		public void Clear()
 		{
@@ -170,8 +179,7 @@ namespace GamemodeManager.TemplateSystem
 		/// </summary>
 		/// <param name="item">The item to be checked</param>
 		/// <returns>Whether the operation is successful</returns>
-		public bool Contains(KeyValuePair<string, Template> item) =>
-			this.Keys.Contains(item.Key) && this.Values.Contains(item.Value);
+		public bool Contains(KeyValuePair<string, Template> item) => this.Keys.Contains(item.Key) && this.Values.Contains(item.Value);
 
 		/// <inheritdoc />
 		/// <summary>
@@ -210,7 +218,7 @@ namespace GamemodeManager.TemplateSystem
 		/// <returns><see cref="T:System.Collections.IEnumerator" /></returns>
 		IEnumerator IEnumerable.GetEnumerator()
 		{
-			return this.GetEnumerator();
+			return GetEnumerator();
 		}
 	}
 }

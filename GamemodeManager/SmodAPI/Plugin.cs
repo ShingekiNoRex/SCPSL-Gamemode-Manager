@@ -1,4 +1,5 @@
-﻿using Smod2.Attributes;
+﻿using Smod2;
+using Smod2.Attributes;
 using Smod2.Config;
 using Smod2.Lang;
 
@@ -14,7 +15,7 @@ namespace GamemodeManager.SmodAPI
 		SmodMinor = 4,
 		SmodRevision = 0
 	)]
-	internal class PluginGamemodeManager : Smod2.Plugin
+	internal class PluginGamemodeManager : Plugin
 	{
 		public override void OnDisable()
 		{
@@ -22,19 +23,19 @@ namespace GamemodeManager.SmodAPI
 
 		public override void OnEnable()
 		{
-			this.Info("Gamemode Manager has been enabled :)");
+			Info("Gamemode Manager has been enabled :)");
 		}
 
 		public override void Register()
 		{
 			// Register Events
-			this.AddEventHandlers(new SmodEventHandler(this));
-			this.AddConfig(new ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
-			this.AddConfig(new ConfigSetting("gm_round_sequence", new [] { string.Empty }, true, string.Empty)); // list
-			this.AddCommand("gamemode", new CommandHandler(this));
-			this.AddCommand("gmm", new CommandHandler(this));
-			this.AddTranslation(new LangSetting("GM_CURRENT_MODE", "Current Mode"));
-			this.AddTranslation(new LangSetting("GM_DESCRIPTION", "Description"));
+			AddEventHandlers(new SmodEventHandler(this));
+			AddConfig(new ConfigSetting("gm_enable", true, true, "enables GameModes for the current server")); // bool
+			AddConfig(new ConfigSetting("gm_round_sequence", new [] { string.Empty }, true, string.Empty)); // list
+			AddCommand("gamemode", new CommandHandler(this));
+			AddCommand("gmm", new CommandHandler(this));
+			AddTranslation(new LangSetting("GM_CURRENT_MODE", "Current Mode"));
+			AddTranslation(new LangSetting("GM_DESCRIPTION", "Description"));
 		}
 	}
 }

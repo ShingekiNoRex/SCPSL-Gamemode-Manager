@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace GamemodeManager.TemplateSystem
 {
@@ -7,7 +6,7 @@ namespace GamemodeManager.TemplateSystem
 	{
 		public Template()
 		{
-			this.AssignProperties();
+			AssignProperties();
 		}
 
 		public Template(string pluginId, string[] lines)
@@ -15,7 +14,7 @@ namespace GamemodeManager.TemplateSystem
 			this.PluginId = pluginId;
 			this.Lines = lines;
 
-			this.AssignProperties();
+			AssignProperties();
 		}
 
 		public string PluginId { get; set; }
@@ -56,8 +55,6 @@ namespace GamemodeManager.TemplateSystem
 						break;
 					case "DESCRIPTION":
 						this.Description = node.Value;
-						break;
-					default:
 						break;
 				}
 			}

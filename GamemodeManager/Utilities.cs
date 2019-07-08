@@ -1,4 +1,6 @@
-﻿namespace GamemodeManager
+﻿using System.IO;
+
+namespace GamemodeManager
 {
 	/// <summary>
 	/// An ancillary class of methods
@@ -35,5 +37,7 @@
 		/// <returns>The new array</returns>
 		public static T[] Range<T>(this T[] input, int amount) =>
 			Range(input, 0, amount);
+
+		public static bool IsEmptyFile(this string path) => File.ReadAllLines(path).Length == 0;
 	}
 }
